@@ -1,1 +1,23 @@
+# Architect-Eye: Git Configuration & Integrity Standards
+# Path: Architect-Eye-Public/.gitattributes
 
+# Force LF (Line Feed) for all text files to ensure cross-platform consistency
+* text=auto eol=lf
+
+# Explicitly handle project documentation
+*.md text eol=lf
+
+# Configuration files for CI/CD and deployment
+*.yml text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# Binary assets (Images/Branding)
+*.png binary
+*.jpg binary
+*.svg binary
+
+# Security and License files should be treated as non-mergeable code in specific contexts
+SECURITY.md -merge
+LICENSE -merge
