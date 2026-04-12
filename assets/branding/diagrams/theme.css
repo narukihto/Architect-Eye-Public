@@ -1,1 +1,50 @@
+/* * Architect-Eye: Visual Identity & Theme
+ * Path: Architect-Eye-Public/assets/theme.css
+ * * Theme: Cyber-Ethereal / Glassmorphism
+ * Purpose: Reflects technical sovereignty and high-speed execution.
+ */
 
+:root {
+    --bg-deep: #050505;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-blue: #00d4ff;
+    --accent-purple: #7000ff;
+    --text-main: #e0e0e0;
+}
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Glassmorphism Container */
+.sovereign-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Accent Gradients for Branding */
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* High-Speed Animation for Status Indicators */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+}
+
+.status-active {
+    animation: pulse 2s infinite;
+}
