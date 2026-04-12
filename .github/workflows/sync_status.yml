@@ -8,6 +8,10 @@ on:
     - cron: '*/15 * * * *'
   workflow_dispatch:
 
+# إضافة الصلاحيات المطلوبة للـ Push الآلي
+permissions:
+  contents: write
+
 jobs:
   update-status:
     runs-on: ubuntu-latest
@@ -17,21 +21,20 @@ jobs:
 
       - name: Fetch Health Data
         run: |
-          # إضافة معالجة للأخطاء (Error Handling)
-          # إذا فشل الاتصال، لا نريد كسر الـ Pipeline
+          # إضافة معالجة للأخطاء
           status=$(curl -s --max-time 10 https://api.your-sovereign-domain.com/health || echo "Offline")
-          echo "Current Status: $status" > site/status.txt
+          echo "$status" > site/status.txt
 
       - name: Commit and Push Update
         run: |
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
           
-          # التحقق من وجود تغييرات قبل الـ Commit لتجنب الخطأ إذا لم يتغير شيء
           if [ -n "$(git status --porcelain)" ]; then
             git add site/status.txt
             git commit -m "chore: System status auto-sync [Auto-Generated]"
-            git push
+            # استخدام الـ token الافتراضي المدمج للتوثيق
+            git push origin main
           else
             echo "No status changes detected. Skipping commit."
           fi
