@@ -1,22 +1,32 @@
 # Architect-Eye: Public Throne Deployment
 # Path: Architect-Eye-Public/.github/workflows/pages_deploy.yml
+# Purpose: Deploys Sovereign Dashboard via Signal Protocol or Manual Override.
 
 name: Deploy Sovereign Dashboard
 
 on:
+  # الربط التلقائي عبر الإشارة من المستودع الخاص
   repository_dispatch:
-    types: [core_integrity_verified] # هنا يكمن الربط، هذا يستمع للإشارة القادمة
+    types: [core_integrity_verified]
+  
+  # مخرج الطوارئ: للنشر اليدوي المباشر عند الحاجة
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# تحديد بيئة النشر لضمان الاستقرار
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
       
       - name: Setup Pages
@@ -25,7 +35,9 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
+          # نحدد المجلد الذي يحتوي على ملفات الموقع (تأكد من وجود ملف index.html فيه)
           path: '.'
           
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
