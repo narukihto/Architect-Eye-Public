@@ -1,12 +1,10 @@
 # Architect-Eye: Public Status Synchronization
 # Path: Architect-Eye-Public/.github/workflows/sync_status.yml
-# Purpose: Fetches real-time sovereign node status from the Private Core Server.
 
 name: Sync System Status
 
 on:
   schedule:
-    # Check status every 15 minutes
     - cron: '*/15 * * * *'
   workflow_dispatch:
 
@@ -19,15 +17,21 @@ jobs:
 
       - name: Fetch Health Data
         run: |
-          # Fetch status from your sovereign endpoint
-          # Using a curl command to ping the private engine
-          status=$(curl -s https://api.your-sovereign-domain.com/health)
+          # إضافة معالجة للأخطاء (Error Handling)
+          # إذا فشل الاتصال، لا نريد كسر الـ Pipeline
+          status=$(curl -s --max-time 10 https://api.your-sovereign-domain.com/health || echo "Offline")
           echo "Current Status: $status" > site/status.txt
 
       - name: Commit and Push Update
         run: |
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
-          git add site/status.txt
-          git commit -m "chore: System status auto-sync [Auto-Generated]"
-          git push
+          
+          # التحقق من وجود تغييرات قبل الـ Commit لتجنب الخطأ إذا لم يتغير شيء
+          if [ -n "$(git status --porcelain)" ]; then
+            git add site/status.txt
+            git commit -m "chore: System status auto-sync [Auto-Generated]"
+            git push
+          else
+            echo "No status changes detected. Skipping commit."
+          fi
