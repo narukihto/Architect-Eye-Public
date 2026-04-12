@@ -1,1 +1,60 @@
+/* * Architect-Eye: Visual Orchestration Style
+ * Path: Architect-Eye-Public/site/style.css
+ * Focus: Cyber-Ethereal Glassmorphism
+ */
 
+body {
+    background: radial-gradient(circle at center, #0a0a0a, #000000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Glassmorphism Sovereign Panel */
+.sovereign-card {
+    width: 85%;
+    max-width: 900px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+}
+
+/* Hive Mind Visual Representation */
+.agent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.agent-node {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 0.8rem;
+    transition: all 0.4s ease;
+}
+
+.agent-node:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 15px var(--accent-blue);
+    transform: translateY(-5px);
+}
+
+/* Status Pulse */
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: var(--accent-blue);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
