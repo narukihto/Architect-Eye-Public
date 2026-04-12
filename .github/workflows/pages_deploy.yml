@@ -1,0 +1,34 @@
+# Architect-Eye: Automated Deployment to GitHub Pages
+# Path: Architect-Eye-Public/.github/workflows/pages_deploy.yml
+# Purpose: Deploys the Sovereign Dashboard to the public web.
+
+name: Deploy Sovereign Dashboard
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Deploying the entire public site directory
+          path: './'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
