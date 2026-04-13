@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Architect-Eye | Sovereign Orchestrator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect-Eye | Sovereign Orchestrator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,10 +25,10 @@
     </div>
 
     <script>
-        // دالة تحديث الحالة
         async function updateFeed() {
             try {
-                const res = await fetch('status.txt');
+                // التأكد من جلب الملف من الجذر
+                const res = await fetch('./status.txt');
                 if (res.ok) {
                     const txt = await res.text();
                     document.getElementById('status-feed').innerText = txt;
