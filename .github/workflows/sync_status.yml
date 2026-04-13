@@ -4,11 +4,11 @@
 name: Sync System Status
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'
+  # التغيير الجوهري: الاستماع للإشارة القادمة من المستودع الخاص
+  repository_dispatch:
+    types: [core_integrity_verified]
   workflow_dispatch:
 
-# إضافة الصلاحيات المطلوبة للـ Push الآلي
 permissions:
   contents: write
 
@@ -19,11 +19,14 @@ jobs:
       - name: Checkout Public Repository
         uses: actions/checkout@v4
 
-      - name: Fetch Health Data
+      - name: Update Health Data
         run: |
-          # إضافة معالجة للأخطاء
-          status=$(curl -s --max-time 10 https://api.your-sovereign-domain.com/health || echo "Offline")
-          echo "$status" > site/status.txt
+          # استخراج الحالة من الـ Payload المرسل من المستودع الخاص
+          status="${{ github.event.client_payload.status }}"
+          origin="${{ github.event.client_payload.origin }}"
+          
+          echo "Status: $status | Origin: $origin"
+          echo "System Status: $status (Last Verified: $(date))" > site/status.txt
 
       - name: Commit and Push Update
         run: |
@@ -32,9 +35,8 @@ jobs:
           
           if [ -n "$(git status --porcelain)" ]; then
             git add site/status.txt
-            git commit -m "chore: System status auto-sync [Auto-Generated]"
-            # استخدام الـ token الافتراضي المدمج للتوثيق
+            git commit -m "chore: Status updated via Private Core Signal [Auto-Generated]"
             git push origin main
           else
-            echo "No status changes detected. Skipping commit."
+            echo "No status changes detected."
           fi
