@@ -1,6 +1,6 @@
 # Architect-Eye: Public Throne Deployment
 # Path: Architect-Eye-Public/.github/workflows/pages_deploy.yml
-# Purpose: Deploys Sovereign Dashboard via Signal Protocol or Manual Override.
+# Purpose: Deploys Sovereign Dashboard from the /site directory.
 
 name: Deploy Sovereign Dashboard
 
@@ -27,7 +27,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          # تم تغيير المسار هنا ليشير إلى المجلد الذي يحتوي على ملفات الموقع
+          path: 'site/'
           
       - name: Deploy to GitHub Pages
         id: deployment
