@@ -1,16 +1,65 @@
-/* ... (احتفظ بكل التعريفات السابقة أعلاه كما هي) ... */
+/* 1. الجذور السيادية - الأساس الذي بدونه تنهار الواجهة */
+:root {
+    --bg-dark: #050505;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-blue: #00f2ff;
+    --accent-purple: #9d00ff;
+    --text-primary: #ffffff;
+    --text-muted: #a0a0a0;
+}
 
-/* تحديثات تفاعلية للعقد (Agents) */
+/* 2. الهيكل العام - إجبار المتصفح على الخلفية المظلمة */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sovereign-card {
+    width: 100%;
+    max-width: 900px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 3. حاوية الحالة */
+.live-status-box {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: monospace;
+    margin-bottom: 2rem;
+}
+
+/* 4. تحديثات العقد (التنسيق الذي طلبته) */
+#hive-visualization {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    perspective: 1000px;
+}
+
 .agent-node {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--card-bg);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* حركة أنعم */
-    cursor: pointer;          /* مؤشر النقر */
-    user-select: none;        /* منع تظليل النص عند النقر */
-    position: relative;
-    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
 }
 
 .agent-node:hover {
@@ -19,25 +68,15 @@
     transform: translateY(-5px);
 }
 
-/* حالة التفاعل عند الضغط */
 .agent-node:active {
-    transform: scale(0.95);      /* تأثير "الضغط المادي" */
+    transform: scale(0.95);
     border-color: var(--accent-purple);
-    box-shadow: inset 0 0 10px rgba(157, 0, 255, 0.5);
 }
 
-/* تحسين حاوية العقد */
-#hive-visualization {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-    perspective: 1000px; /* لتعزيز الإحساس بالعمق */
-}
-
-/* تنسيق الـ status في العقد */
 .status {
     font-size: 0.7rem;
     letter-spacing: 1px;
     color: var(--text-muted);
+    display: block;
+    margin-top: 0.5rem;
 }
