@@ -19,22 +19,23 @@ jobs:
 
       - name: Update Health Data
         run: |
-         
           status=$(jq -r '.client_payload.status // "Unknown"' $GITHUB_EVENT_PATH)
           origin=$(jq -r '.client_payload.origin // "Unknown"' $GITHUB_EVENT_PATH)
           
           echo "Processing Dispatch: $status from $origin"
-          mkdir -p site
-          echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
+          
+          # التعديل المعماري: الكتابة في الجذر (Root) مباشرة لتناسب الـ HTML الجديد
+          echo "Status: $status | Origin: $origin | Last Sync: $(date)" > status.txt
 
       - name: Commit and Push Update
         run: |
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
           
-          if [ -n "$(git status --porcelain site/status.txt)" ]; then
-            git add site/status.txt
-            git commit -m "chore(status): update system integrity state from core source"
+          # فحص التغييرات في ملف status.txt في الجذر
+          if [ -n "$(git status --porcelain status.txt)" ]; then
+            git add status.txt
+            git commit -m "chore(status): update integrity state at root"
             git push origin main
           else
             echo "No status changes detected. Skipping push."
