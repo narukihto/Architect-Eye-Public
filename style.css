@@ -1,68 +1,43 @@
-:root {
-    /* Sovereign Color Palette */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --accent-blue: #00f2ff;
-    --accent-purple: #9d00ff;
-    --text-primary: #ffffff;
-    --text-muted: #a0a0a0;
-}
+/* ... (احتفظ بكل التعريفات السابقة أعلاه كما هي) ... */
 
-body {
-    background: radial-gradient(circle at center, #0a0a0a, #000000);
-    color: var(--text-primary);
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.sovereign-card {
-    width: 90%;
-    max-width: 900px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-    border-radius: 24px;
-    padding: 3rem;
-}
-
-.gradient-text {
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.agent-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
+/* تحديثات تفاعلية للعقد (Agents) */
 .agent-node {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 1.5rem;
-    transition: all 0.4s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* حركة أنعم */
+    cursor: pointer;          /* مؤشر النقر */
+    user-select: none;        /* منع تظليل النص عند النقر */
+    position: relative;
+    overflow: hidden;
 }
 
 .agent-node:hover {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    transform: translateY(-5px);
 }
 
-.live-status-box {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    font-family: monospace;
-    color: var(--accent-blue);
+/* حالة التفاعل عند الضغط */
+.agent-node:active {
+    transform: scale(0.95);      /* تأثير "الضغط المادي" */
+    border-color: var(--accent-purple);
+    box-shadow: inset 0 0 10px rgba(157, 0, 255, 0.5);
+}
+
+/* تحسين حاوية العقد */
+#hive-visualization {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    perspective: 1000px; /* لتعزيز الإحساس بالعمق */
+}
+
+/* تنسيق الـ status في العقد */
+.status {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: var(--text-muted);
 }
