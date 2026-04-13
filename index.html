@@ -2,37 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architect-Eye | Sovereign Orchestrator</title>
-    <link rel="stylesheet" href="assets/branding/diagrams/theme.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="sovereign-card">
         <header>
             <h1 class="gradient-text">ARCHITECT-EYE OS</h1>
-            <p>Sovereign Orchestration Node // 2026 Edition</p>
         </header>
 
         <section id="system-status-container">
-            <div class="status-indicator">
-                <span class="dot status-active"></span>
-                <span>System Integrity: <strong id="integrity-level">100%</strong></span>
-            </div>
-            <div id="status-feed" class="live-status-box">
-                <p>Connecting to Private Core...</p>
-            </div>
+            <div id="status-feed" class="live-status-box">Loading...</div>
         </section>
 
-        <main>
-            <div class="grid-layout">
-                <div class="agent-grid">
-                    <p>Hive Mind Cluster Active: 12/12 Agents Operational</p>
-                    <div id="hive-visualization"></div>
-                </div>
-            </div>
-        </main>
+        <div id="hive-visualization" class="agent-grid"></div>
 
         <footer>
             <p>"The future is not coded; it is architected."</p>
@@ -40,19 +23,13 @@
     </div>
 
     <script>
-        // سكريبت بسيط لجلب الحالة وتحديث الواجهة تلقائياً
-        async function fetchStatus() {
-            try {
-                const response = await fetch('status.txt');
-                const data = await response.text();
-                document.getElementById('status-feed').innerText = data;
-            } catch (error) {
-                document.getElementById('status-feed').innerText = "Core Connection Lost.";
-            }
+        async function updateFeed() {
+            const res = await fetch('status.txt');
+            const txt = await res.text();
+            document.getElementById('status-feed').innerText = txt;
         }
-        // تحديث الحالة كل 5 ثوانٍ لضمان التزامن مع المحرك
-        setInterval(fetchStatus, 5000);
-        fetchStatus();
+        setInterval(updateFeed, 5000);
+        updateFeed();
     </script>
     <script src="script.js"></script>
 </body>
