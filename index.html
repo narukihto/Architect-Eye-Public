@@ -11,6 +11,10 @@
         <header>
             <h1 class="gradient-text">ARCHITECT-EYE OS</h1>
             <p>Sovereign Orchestration Node // 2026 Edition</p>
+            
+            <div class="integrity-counter">
+                Threats Neutralized: <span id="threat-count">0</span>
+            </div>
         </header>
 
         <section id="system-status-container">
@@ -25,9 +29,9 @@
     </div>
 
     <script>
+        // دالة تحديث الحالة العامة
         async function updateFeed() {
             try {
-                // التأكد من جلب الملف من الجذر
                 const res = await fetch('./status.txt');
                 if (res.ok) {
                     const txt = await res.text();
