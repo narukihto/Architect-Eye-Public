@@ -4,7 +4,6 @@
 name: Sync System Status
 
 on:
-  # تم حذف workflow_dispatch تماماً لضمان عدم التشغيل اليدوي
   repository_dispatch:
     types: [core_integrity_verified]
 
@@ -20,7 +19,7 @@ jobs:
 
       - name: Update Health Data
         run: |
-          # استخراج البيانات من ملف الحدث
+         
           status=$(jq -r '.client_payload.status // "Unknown"' $GITHUB_EVENT_PATH)
           origin=$(jq -r '.client_payload.origin // "Unknown"' $GITHUB_EVENT_PATH)
           
@@ -35,7 +34,7 @@ jobs:
           
           if [ -n "$(git status --porcelain site/status.txt)" ]; then
             git add site/status.txt
-            git commit -m "chore: System status auto-sync [Auto-Generated]"
+            git commit -m "chore(status): update system integrity state from core source"
             git push origin main
           else
             echo "No status changes detected. Skipping push."
