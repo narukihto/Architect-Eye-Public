@@ -4,9 +4,9 @@
 name: Sync System Status
 
 on:
+  # تم حذف workflow_dispatch تماماً لضمان عدم التشغيل اليدوي
   repository_dispatch:
     types: [core_integrity_verified]
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,25 +20,19 @@ jobs:
 
       - name: Update Health Data
         run: |
-          # نتحقق من نوع الحدث
-          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            # استخراج البيانات مباشرة من ملف الحدث لضمان الدقة
-            status=$(jq -r '.client_payload.status // "Unknown"' $GITHUB_EVENT_PATH)
-            origin=$(jq -r '.client_payload.origin // "Unknown"' $GITHUB_EVENT_PATH)
-            
-            echo "Processing Dispatch: $status from $origin"
-            mkdir -p site
-            echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
-          else
-            echo "Non-dispatch event. Skipping update."
-          fi
+          # استخراج البيانات من ملف الحدث
+          status=$(jq -r '.client_payload.status // "Unknown"' $GITHUB_EVENT_PATH)
+          origin=$(jq -r '.client_payload.origin // "Unknown"' $GITHUB_EVENT_PATH)
+          
+          echo "Processing Dispatch: $status from $origin"
+          mkdir -p site
+          echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
 
       - name: Commit and Push Update
         run: |
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
           
-          # التحقق من وجود تغييرات حقيقية
           if [ -n "$(git status --porcelain site/status.txt)" ]; then
             git add site/status.txt
             git commit -m "chore: System status auto-sync [Auto-Generated]"
