@@ -1,78 +1,93 @@
-/* * Architect-Eye: Visual Orchestration Script (Enhanced Interaction)
+/* * Architect-Eye: Sovereign Orchestration Script (Version 2.0)
  * Path: Architect-Eye-Public/script.js
- * Purpose: Interactive Hive Mind management and real-time Core sync.
+ * Status: Operational | Level-0 Authority: Enabled
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 const agents = 12;
+let threatCount = 0; // العداد السيادي للتهديدات المصودة
 
-// تهيئة العقد (Nodes) مع دعم التفاعل
+// تهيئة العقد (Nodes)
 function initHiveMind() {
     for (let i = 0; i < agents; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
         node.id = `agent-${i}`;
-        node.innerHTML = `<strong>Agent-${i}</strong><br><span class="status">IDLE</span>`;
+        // إضافة معرف مشفر للعقدة
+        node.innerHTML = `<strong>Agent-${i}</strong><br>
+                         <span class="status">IDLE</span><br>
+                         <small style="font-size:0.5rem; color:#444">ID:${btoa(i).substring(0,6)}</small>`;
         
-        // تفعيل التفاعل عند الضغط (Event Listener)
         node.addEventListener('click', () => handleNodeClick(i));
-        
         hiveContainer.appendChild(node);
     }
     updateStatus();
 }
 
-// دالة التفاعل عند الضغط
+// دالة التفاعل (Override) مع التوقيع الرقمي
 function handleNodeClick(agentId) {
     const node = document.getElementById(`agent-${agentId}`);
-    console.log(`Manual Override: Accessing Agent-${agentId}`);
+    const signature = `0x${Math.random().toString(16).substring(2, 10)}`;
     
-    // تأثير بصري للضغط
     node.style.transform = 'scale(0.95)';
     node.style.borderColor = 'var(--accent-purple)';
     
     setTimeout(() => {
         node.style.transform = 'scale(1)';
         node.style.borderColor = 'var(--accent-blue)';
-        alert(`Agent-${agentId} Status: Secure & Synchronized.`);
+        alert(`[Level-0 Authorized]\nAgent-${agentId} Signature: ${signature}\nStatus: Secure & Synchronized.`);
     }, 200);
 }
 
-// محاكاة نشاط العقد التلقائي
+// محاكاة نشاط العقد التلقائي مع الـ Self-Healing
 function updateStatus() {
     setInterval(() => {
         const randomAgent = Math.floor(Math.random() * agents);
         const node = document.getElementById(`agent-${randomAgent}`);
         if (!node) return;
+        
         const status = node.querySelector('.status');
         
-        status.textContent = 'SYNCING...';
-        node.style.borderColor = 'var(--accent-purple)';
-        
-        setTimeout(() => {
+        // محاكاة تهديد (خلل مفاجئ)
+        if (Math.random() > 0.9) {
+            status.textContent = 'CRITICAL';
+            node.style.borderColor = 'red';
+            
+            // تحديث العداد السيادي
+            threatCount++;
+            const counterEl = document.getElementById('threat-count');
+            if (counterEl) counterEl.textContent = threatCount;
+            
+            console.warn(`Anomaly detected at Agent-${randomAgent}. Self-Healing engaged.`);
+            
+            // دورة الإصلاح الذاتي
+            setTimeout(() => {
+                status.textContent = 'ACTIVE';
+                node.style.borderColor = 'var(--accent-blue)';
+            }, 1500);
+        } else {
             status.textContent = 'ACTIVE';
-            node.style.borderColor = 'var(--accent-blue)';
-        }, 500);
-    }, 1000);
+        }
+    }, 1500);
 }
 
 // الربط الفعلي مع المحرك السيادي
 async function fetchSystemHealth() {
     try {
-        const response = await fetch('status.txt');
+        const response = await fetch('./status.txt');
         const text = await response.text();
         
-        const integrityEl = document.getElementById('integrity-level');
-        if (integrityEl) {
-            integrityEl.textContent = text.includes("Engine-Operational") ? "99.9%" : "Pending";
+        const statusFeed = document.getElementById('status-feed');
+        if (statusFeed) {
+            statusFeed.textContent = text.includes("Engine-Operational") ? "CORE: OPERATIONAL | PROTECTED" : "CORE: SYNCING...";
         }
     } catch (error) {
-        console.error("Connection to Core Orchestrator failed.");
+        console.error("Connection to Core failed.");
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     initHiveMind();
     fetchSystemHealth();
-    setInterval(fetchSystemHealth, 10000);
+    setInterval(fetchSystemHealth, 5000);
 });
