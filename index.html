@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architect-Eye | Sovereign Orchestrator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <div class="sovereign-card">
@@ -29,7 +29,7 @@
     </div>
 
     <script>
-        // دالة تحديث الحالة العامة
+        // دالة تحديث الحالة العامة من السيرفر
         async function updateFeed() {
             try {
                 const res = await fetch('./status.txt');
@@ -41,6 +41,8 @@
                 console.error("Sync Error:", err);
             }
         }
+        
+        // التزامن كل 5 ثوانٍ
         setInterval(updateFeed, 5000);
         updateFeed();
     </script>
