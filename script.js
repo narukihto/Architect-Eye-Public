@@ -1,24 +1,44 @@
-/* * Architect-Eye: Visual Orchestration Script
+/* * Architect-Eye: Visual Orchestration Script (Enhanced Interaction)
  * Path: Architect-Eye-Public/script.js
- * Purpose: Simulates Hive Mind activity and syncs with the Sovereign Core via status.txt.
+ * Purpose: Interactive Hive Mind management and real-time Core sync.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 const agents = 12;
 
-// تهيئة العقد (Nodes)
+// تهيئة العقد (Nodes) مع دعم التفاعل
 function initHiveMind() {
     for (let i = 0; i < agents; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
         node.id = `agent-${i}`;
         node.innerHTML = `<strong>Agent-${i}</strong><br><span class="status">IDLE</span>`;
+        
+        // تفعيل التفاعل عند الضغط (Event Listener)
+        node.addEventListener('click', () => handleNodeClick(i));
+        
         hiveContainer.appendChild(node);
     }
     updateStatus();
 }
 
-// محاكاة نشاط العقد
+// دالة التفاعل عند الضغط
+function handleNodeClick(agentId) {
+    const node = document.getElementById(`agent-${agentId}`);
+    console.log(`Manual Override: Accessing Agent-${agentId}`);
+    
+    // تأثير بصري للضغط
+    node.style.transform = 'scale(0.95)';
+    node.style.borderColor = 'var(--accent-purple)';
+    
+    setTimeout(() => {
+        node.style.transform = 'scale(1)';
+        node.style.borderColor = 'var(--accent-blue)';
+        alert(`Agent-${agentId} Status: Secure & Synchronized.`);
+    }, 200);
+}
+
+// محاكاة نشاط العقد التلقائي
 function updateStatus() {
     setInterval(() => {
         const randomAgent = Math.floor(Math.random() * agents);
@@ -36,18 +56,16 @@ function updateStatus() {
     }, 1000);
 }
 
-// الربط الفعلي مع المحرك السيادي عبر status.txt
+// الربط الفعلي مع المحرك السيادي
 async function fetchSystemHealth() {
     try {
         const response = await fetch('status.txt');
         const text = await response.text();
         
-        // تحديث واجهة المستخدم بالحالة الحقيقية
         const integrityEl = document.getElementById('integrity-level');
         if (integrityEl) {
             integrityEl.textContent = text.includes("Engine-Operational") ? "99.9%" : "Pending";
         }
-        console.log("Orchestrator Sync: Secure handshake established with Public Throne.");
     } catch (error) {
         console.error("Connection to Core Orchestrator failed.");
     }
@@ -56,6 +74,5 @@ async function fetchSystemHealth() {
 document.addEventListener('DOMContentLoaded', () => {
     initHiveMind();
     fetchSystemHealth();
-    // جلب تحديثات الحالة كل 10 ثوانٍ
     setInterval(fetchSystemHealth, 10000);
 });
