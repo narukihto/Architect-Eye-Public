@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Architect-Eye | Sovereign Orchestrator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Architect-Eye | Sovereign Orchestrator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="sovereign-card">
         <header>
             <h1 class="gradient-text">ARCHITECT-EYE OS</h1>
+            <p>Sovereign Orchestration Node // 2026 Edition</p>
         </header>
 
         <section id="system-status-container">
-            <div id="status-feed" class="live-status-box">Loading...</div>
+            <div id="status-feed" class="live-status-box">Syncing with Core...</div>
         </section>
 
-        <div id="hive-visualization" class="agent-grid"></div>
+        <main id="hive-visualization" class="agent-grid"></main>
 
         <footer>
             <p>"The future is not coded; it is architected."</p>
@@ -23,10 +24,17 @@
     </div>
 
     <script>
+        // دالة تحديث الحالة
         async function updateFeed() {
-            const res = await fetch('status.txt');
-            const txt = await res.text();
-            document.getElementById('status-feed').innerText = txt;
+            try {
+                const res = await fetch('status.txt');
+                if (res.ok) {
+                    const txt = await res.text();
+                    document.getElementById('status-feed').innerText = txt;
+                }
+            } catch (err) {
+                console.error("Sync Error:", err);
+            }
         }
         setInterval(updateFeed, 5000);
         updateFeed();
