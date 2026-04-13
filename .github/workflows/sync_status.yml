@@ -20,26 +20,27 @@ jobs:
 
       - name: Update Health Data
         run: |
-          # استخراج البيانات من الـ payload الذي أرسله المستودع الخاص
-          # إذا لم يكن هناك payload، نضع قيمة افتراضية "Pending"
-          status="${{ github.event.client_payload.status || 'Pending' }}"
-          origin="${{ github.event.client_payload.origin || 'Unknown' }}"
-          
-          echo "Processing: $status from $origin"
-          
-          # إنشاء مجلد site إذا لم يكن موجوداً
-          mkdir -p site
-          echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
+          # نتحقق من نوع الحدث
+          if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+            status="${{ github.event.client_payload.status }}"
+            origin="${{ github.event.client_payload.origin }}"
+            echo "Processing Dispatch: $status from $origin"
+            mkdir -p site
+            echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
+          else
+            echo "Manual or Scheduled trigger. Skipping update to preserve integrity."
+          fi
 
       - name: Commit and Push Update
         run: |
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
           
-          if [ -n "$(git status --porcelain)" ]; then
+          # نتحقق فقط إذا كان هناك تغيير فعلي في الملف
+          if [ -f "site/status.txt" ] && [ -n "$(git status --porcelain site/status.txt)" ]; then
             git add site/status.txt
-            git commit -m "chore: Status updated by Private Core: $status [Auto-Generated]"
+            git commit -m "chore: Status updated by Private Core [Auto-Generated]"
             git push origin main
           else
-            echo "No status changes detected."
+            echo "No status changes or non-dispatch event. Skipping push."
           fi
