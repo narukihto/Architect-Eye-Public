@@ -22,13 +22,15 @@ jobs:
         run: |
           # نتحقق من نوع الحدث
           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
-            status="${{ github.event.client_payload.status }}"
-            origin="${{ github.event.client_payload.origin }}"
+            # استخراج البيانات مباشرة من ملف الحدث لضمان الدقة
+            status=$(jq -r '.client_payload.status // "Unknown"' $GITHUB_EVENT_PATH)
+            origin=$(jq -r '.client_payload.origin // "Unknown"' $GITHUB_EVENT_PATH)
+            
             echo "Processing Dispatch: $status from $origin"
             mkdir -p site
             echo "System Status: $status | Origin: $origin | Last Sync: $(date)" > site/status.txt
           else
-            echo "Manual or Scheduled trigger. Skipping update to preserve integrity."
+            echo "Non-dispatch event. Skipping update."
           fi
 
       - name: Commit and Push Update
@@ -36,11 +38,11 @@ jobs:
           git config --global user.name "Architect-Eye-Sync"
           git config --global user.email "sync@architect-eye.com"
           
-          # نتحقق فقط إذا كان هناك تغيير فعلي في الملف
-          if [ -f "site/status.txt" ] && [ -n "$(git status --porcelain site/status.txt)" ]; then
+          # التحقق من وجود تغييرات حقيقية
+          if [ -n "$(git status --porcelain site/status.txt)" ]; then
             git add site/status.txt
-            git commit -m "chore: Status updated by Private Core [Auto-Generated]"
+            git commit -m "chore: System status auto-sync [Auto-Generated]"
             git push origin main
           else
-            echo "No status changes or non-dispatch event. Skipping push."
+            echo "No status changes detected. Skipping push."
           fi
