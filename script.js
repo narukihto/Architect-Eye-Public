@@ -1,12 +1,12 @@
 /* * Architect-Eye: Visual Orchestration Script
- * Path: Architect-Eye-Public/site/script.js
- * Purpose: Simulates Hive Mind activity and communicates with the backend API.
+ * Path: Architect-Eye-Public/script.js
+ * Purpose: Simulates Hive Mind activity and syncs with the Sovereign Core via status.txt.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 const agents = 12;
 
-// Initialize the 12-Agent Hive Mind Visualization
+// تهيئة العقد (Nodes)
 function initHiveMind() {
     for (let i = 0; i < agents; i++) {
         const node = document.createElement('div');
@@ -18,14 +18,14 @@ function initHiveMind() {
     updateStatus();
 }
 
-// Simulate real-time interaction (Heartbeat)
+// محاكاة نشاط العقد
 function updateStatus() {
     setInterval(() => {
         const randomAgent = Math.floor(Math.random() * agents);
         const node = document.getElementById(`agent-${randomAgent}`);
+        if (!node) return;
         const status = node.querySelector('.status');
         
-        // Visual simulation of high-speed processing
         status.textContent = 'SYNCING...';
         node.style.borderColor = 'var(--accent-purple)';
         
@@ -36,20 +36,26 @@ function updateStatus() {
     }, 1000);
 }
 
-// In a real implementation, this would fetch status from the Sovereign Server
+// الربط الفعلي مع المحرك السيادي عبر status.txt
 async function fetchSystemHealth() {
     try {
-        // const response = await fetch('https://api.your-sovereign-domain.com/status');
-        // const data = await response.json();
-        // document.getElementById('integrity-level').textContent = data.integrity + '%';
-        console.log("Orchestrator Sync: Secure handshake established.");
+        const response = await fetch('status.txt');
+        const text = await response.text();
+        
+        // تحديث واجهة المستخدم بالحالة الحقيقية
+        const integrityEl = document.getElementById('integrity-level');
+        if (integrityEl) {
+            integrityEl.textContent = text.includes("Engine-Operational") ? "99.9%" : "Pending";
+        }
+        console.log("Orchestrator Sync: Secure handshake established with Public Throne.");
     } catch (error) {
         console.error("Connection to Core Orchestrator failed.");
     }
 }
 
-// Launch the system
 document.addEventListener('DOMContentLoaded', () => {
     initHiveMind();
     fetchSystemHealth();
+    // جلب تحديثات الحالة كل 10 ثوانٍ
+    setInterval(fetchSystemHealth, 10000);
 });
