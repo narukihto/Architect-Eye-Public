@@ -1,8 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.1 - PRODUCTION STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.2 - ASSET INTEGRATION)
  * -------------------------------------------------------------------------
- * Updates: Finalized sync logic to match repository status format, 
- * consolidated UI orchestration, and enhanced autonomous agent loops.
+ * Updates: Finalized dynamic asset mapping from /space/, consolidated UI 
+ * orchestration, and stabilized repository sync logic.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
@@ -10,9 +10,33 @@ let scene, camera, renderer, cubeSwarm = [];
 let systemStatus = { state: 'OPERATIONAL' };
 let threatCount = 0;
 
+// Asset mapping: 12 agents, mapped to available images in /space/
+const agentAssets = ["nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg", "nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg"];
+
 /**
- * 1. Autonomous Agent Processor
- * Orchestrates individual agent task cycles with kinetic CSS feedback.
+ * 1. Hive Mind Initializer
+ * Dynamically constructs the agent grid and maps space assets.
+ */
+function initHiveMind() {
+    const grid = document.getElementById('hive-visualization');
+    if (!grid) return;
+    grid.innerHTML = ''; 
+    for (let i = 0; i < 12; i++) {
+        const node = document.createElement('div');
+        node.className = 'agent-node';
+        node.innerHTML = `
+            <img src="space/${agentAssets[i]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px; border: 1px solid #00d4ff;">
+            <br><strong>AGENT-${i}</strong>
+            <br><span>ACTIVE</span>
+            <br><small>ID:---</small>
+        `;
+        grid.appendChild(node);
+    }
+}
+
+/**
+ * 2. Autonomous Agent Processor
+ * Orchestrates individual agent cycles with kinetic CSS feedback.
  */
 function activateAgent(index) {
     const node = document.querySelector(`.agent-node:nth-child(${index + 1})`);
@@ -24,48 +48,36 @@ function activateAgent(index) {
         const newId = Math.random().toString(36).substring(7).toUpperCase();
         
         node.classList.add('processing');
-        node.innerHTML = `<strong>AGENT-${index}</strong><br><span>${currentTask}...</span><br><small>ID:${newId}==</small>`;
+        node.innerHTML = `
+            <img src="space/${agentAssets[index]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px;">
+            <br><strong>AGENT-${index}</strong>
+            <br><span>${currentTask}...</span>
+            <br><small>ID:${newId}==</small>
+        `;
         
         setTimeout(() => {
             node.classList.remove('processing');
-            node.innerHTML = `<strong>AGENT-${index}</strong><br><span>ACTIVE</span><br><small>ID:${newId}==</small>`;
+            node.innerHTML = `
+                <img src="space/${agentAssets[index]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px;">
+                <br><strong>AGENT-${index}</strong>
+                <br><span>ACTIVE</span>
+                <br><small>ID:${newId}==</small>
+            `;
         }, 1200);
         
     }, Math.random() * 4000 + 2000); 
 }
 
 /**
- * 2. Autonomous Threat Counter
- * Tracks neutralized threats locally.
- */
-function startLiveThreatCounter() {
-    setInterval(() => {
-        threatCount += Math.floor(Math.random() * 3);
-        const counterElement = document.getElementById('threat-count');
-        if (counterElement) counterElement.innerText = threatCount;
-    }, 1500);
-}
-
-/**
  * 3. Synchronization & UI Orchestrator
- * Parses status.txt to synchronize engine state with external repository.
  */
 async function syncSystemStatus() {
     try {
         const response = await fetch('status.txt?nocache=' + new Date().getTime());
         const data = await response.text();
-        
-        // Robust state parsing based on current repository format
-        if (data.includes('Engine-Operational')) {
-            systemStatus.state = 'OPERATIONAL';
-        } else if (data.includes('CRITICAL')) {
-            systemStatus.state = 'CRITICAL';
-        }
-        
+        systemStatus.state = data.includes('Engine-Operational') ? 'OPERATIONAL' : 'CRITICAL';
         updateUI();
-    } catch (e) { 
-        console.warn("Backend Sync Standby..."); 
-    }
+    } catch (e) { console.warn("Backend Sync Standby..."); }
 }
 
 function updateUI() {
@@ -79,9 +91,9 @@ function updateUI() {
     });
 }
 
-// System Initialization
+// Initialization Logic
 document.addEventListener('DOMContentLoaded', () => {
-    init3DEnvironment();
+    init3DEnvironment(); // Assumes existing 3D context
     initHiveMind();
     startLiveThreatCounter();
     syncSystemStatus();
