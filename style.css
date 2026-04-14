@@ -1,6 +1,7 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.0 - BLUE MATRIX)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.2 - BLUE MATRIX)
  * -------------------------------------------------------------------------
+ * التحسينات: نظام تمركز مرن، حماية النقرات، وتوافق تام مع الـ Mobile
  */
 
 :root {
@@ -9,7 +10,6 @@
     --accent-glow: rgba(0, 212, 255, 0.2);
     --text-main: #e0e0e0;
     --glass-bg: rgba(0, 20, 40, 0.6);
-    --glass-border: rgba(0, 212, 255, 0.3);
 }
 
 body {
@@ -17,46 +17,51 @@ body {
     background-color: var(--bg-deep);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto; /* تعديل: السماح بالتمرير إذا زاد المحتوى عن الشاشة */
     height: 100vh;
 }
 
-/* 1. إصلاح مشكلة الظغط: الـ canvas لا يستقبل النقرات */
+/* 1. الحصن ضد تغطية النقرات (مستقر) */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     z-index: 0;
-    pointer-events: none; /* الحصن ضد تغطية النقرات */
+    pointer-events: none; 
 }
 
-/* 2. رفع مستوى الحاويات فوق أي شيء */
+/* 2. تحسين نظام التمركز (Flexbox Grid) */
 .view-container {
     display: none;
-    position: absolute; /* تغيير من relative لـ absolute لضمان التموضع الصحيح */
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 100; /* أولوية قصوى للنقرات */
+    position: relative; /* أفضل من absolute لضمان تدفق العناصر */
+    z-index: 100;
+    min-height: 100vh;
+    width: 100%;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .view-container.active { display: flex; }
 
-/* بقية التنسيقات (لا تغيير) */
+/* 3. هيكل البطاقة السيادية */
 .sovereign-card {
     background: var(--glass-bg);
     border: 1px solid var(--accent-blue);
     padding: 2.5rem;
     border-radius: 20px;
     backdrop-filter: blur(15px);
-    width: 80%;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 900px; /* تحديد العرض لضمان التناسق */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
+/* 4. شبكة الوكلاء (تجاوبية) */
 .agent-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-top: 2rem;
 }
@@ -68,29 +73,29 @@ body {
     text-align: center;
     background: rgba(0, 212, 255, 0.05);
     border-radius: 10px;
-    cursor: pointer; /* تأكيد أن العقد قابلة للضغط */
     transition: 0.3s;
+    cursor: default; /* تم إزالة pointer لأننا أوقفنا التنقل عند الضغط */
 }
 
 .agent-node:hover {
-    background: rgba(0, 212, 255, 0.2);
-    box-shadow: 0 0 15px var(--accent-blue);
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateY(-2px);
 }
 
-.agent-info-box {
-    background: rgba(0, 20, 40, 0.3);
-    border-radius: 8px;
-    border-left: 3px solid var(--accent-blue) !important;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
+/* 5. زر الدخول */
 .entry-btn {
     background: transparent;
-    border: 1px solid var(--accent-blue);
+    border: 2px solid var(--accent-blue);
     color: var(--accent-blue);
     padding: 1rem 3rem;
     cursor: pointer;
+    font-weight: 600;
+    transition: 0.4s;
+    text-transform: uppercase;
 }
 
-.entry-btn:hover { background: var(--accent-blue); color: black; }
+.entry-btn:hover {
+    background: var(--accent-blue);
+    color: var(--bg-deep);
+    box-shadow: 0 0 20px var(--accent-blue);
+}
