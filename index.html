@@ -1,62 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architect-Eye | Sovereign Orchestrator OS</title>
-    
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-</head>
-<body class="cyber-pulse-bg">
+/**
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.3 - STABLE)
+ * -------------------------------------------------------------------------
+ * Updates: Resolved layout overlap issues, finalized Z-index layering for 
+ * Three.js integration, and optimized glass-morphism transparency.
+ */
 
-    <canvas id="core-canvas"></canvas>
+:root {
+    --bg-deep: #00050a;
+    --accent-blue: #00d4ff;
+    --accent-gold: #ffd700;
+    --text-main: #e0e0e0;
+    --glass-bg: rgba(0, 10, 20, 0.7); /* Deepened glass for contrast */
+    --critical-red: #ff0033;
+}
 
-    <div id="main-view" class="view-container active">
-        <div class="glass-gate">
-            <h1 class="glitch-text" data-text="ARCHITECT-EYE">ARCHITECT-EYE</h1>
-            <p class="hero-subtitle">SOVEREIGN AI ORCHESTRATION SYSTEM // 2026</p>
-            <button class="entry-btn" onclick="navigateTo('dashboard-view')">INITIALIZE PROTOCOL</button>
-            <div class="gateway-nav-grid">
-                <button class="gateway-link" onclick="navigateTo('dashboard-view')">DASHBOARD SYNC</button>
-                <button class="gateway-link" onclick="navigateTo('info-view')">INTELLIGENCE REPOSITORY</button>
-            </div>
-        </div>
-    </div>
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
 
-    <div id="dashboard-view" class="view-container">
-        <div class="sovereign-card">
-            <header>
-                <h1 class="gradient-text">SYSTEM CORE</h1>
-                <div class="nav-links">
-                    <span onclick="navigateTo('main-view')" style="cursor:pointer;">BACK TO GATEWAY</span> | 
-                    <span onclick="navigateTo('info-view')" style="cursor:pointer;">INTELLIGENCE REPOSITORY</span>
-                </div>
-                <div class="integrity-counter">THREATS NEUTRALIZED: <span id="threat-count">0</span></div>
-            </header>
-            
-            <div id="status-feed" class="live-status-box">CORE: SYNCING WITH SPACE ASSETS...</div>
-            
-            <main id="hive-visualization" class="agent-grid"></main>
-            
-            <footer><p>"The future is not coded; it is architected."</p></footer>
-        </div>
-    </div>
+/* 1. View Controller - Preventing Layout Overlap */
+.view-container {
+    display: none; /* Hide all views by default */
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-    <div id="info-view" class="view-container">
-        <div class="info-card">
-            <button class="back-btn" onclick="navigateTo('dashboard-view')" style="cursor:pointer;">← RETURN TO CORE</button>
-            <h2 class="gold-text">SWARM INTELLIGENCE & ENTERPRISE VALUE</h2>
-            <div class="info-content">
-                <p>The Architect-Eye system orchestrates a 12-agent autonomous hive mind.</p>
-                <div id="agent-definitions-list" class="agent-grid"></div>
-            </div>
-        </div>
-    </div>
+.view-container.active {
+    display: flex; /* Show active view */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-    <script src="agents-info.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+/* 2. Three.js Background Layer */
+#core-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensure canvas stays behind UI */
+}
+
+/* 3. Sovereign UI Components */
+.sovereign-card, .glass-gate, .info-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--accent-blue);
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.15);
+}
+
+/* 4. Hive Visualization Grid */
+.agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.agent-node {
+    border: 1px solid var(--accent-blue);
+    padding: 15px;
+    color: var(--accent-blue);
+    text-align: center;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: idlePulse 4s infinite ease-in-out;
+}
+
+.agent-node img {
+    border: 1px solid var(--accent-blue);
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.agent-node.processing {
+    border-color: var(--accent-gold) !important;
+    color: var(--accent-gold);
+    transform: scale(1.03);
+}
+
+/* 5. UI Elements */
+.live-status-box {
+    margin: 15px 0;
+    padding: 15px;
+    border-left: 4px solid var(--accent-blue);
+    background: rgba(0, 0, 0, 0.6);
+    font-family: 'Courier New', monospace;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); }
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent-blue), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
