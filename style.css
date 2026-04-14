@@ -1,7 +1,8 @@
 /**
  * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.2 - BLUE MATRIX)
  * -------------------------------------------------------------------------
- * التحسينات: نظام تمركز مرن، حماية النقرات، وتوافق تام مع الـ Mobile
+ * Architectural Enhancements: Flex-based responsive grid, pointer-event 
+ * pass-through for WebGL layers, and hardware-accelerated glassmorphism.
  */
 
 :root {
@@ -18,11 +19,12 @@ body {
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
-    overflow-y: auto; /* تعديل: السماح بالتمرير إذا زاد المحتوى عن الشاشة */
-    height: 100vh;
+    /* Enable vertical scrolling to prevent content clipping on smaller screens */
+    overflow-y: auto; 
+    min-height: 100vh;
 }
 
-/* 1. الحصن ضد تغطية النقرات (مستقر) */
+/* 1. Core Canvas Layer: Pass-through pointer events to underlying DOM */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -31,10 +33,10 @@ body {
     pointer-events: none; 
 }
 
-/* 2. تحسين نظام التمركز (Flexbox Grid) */
+/* 2. View Container: Adaptive flexbox for centralized dashboard layout */
 .view-container {
     display: none;
-    position: relative; /* أفضل من absolute لضمان تدفق العناصر */
+    position: relative;
     z-index: 100;
     min-height: 100vh;
     width: 100%;
@@ -46,7 +48,7 @@ body {
 
 .view-container.active { display: flex; }
 
-/* 3. هيكل البطاقة السيادية */
+/* 3. Sovereign Card: Cyber-glassmorphism wrapper for operational data */
 .sovereign-card {
     background: var(--glass-bg);
     border: 1px solid var(--accent-blue);
@@ -54,11 +56,11 @@ body {
     border-radius: 20px;
     backdrop-filter: blur(15px);
     width: 100%;
-    max-width: 900px; /* تحديد العرض لضمان التناسق */
+    max-width: 900px; 
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* 4. شبكة الوكلاء (تجاوبية) */
+/* 4. Agent Grid: Dynamic responsiveness for the 12-node swarm */
 .agent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -66,6 +68,7 @@ body {
     margin-top: 2rem;
 }
 
+/* Agent Node: Static monitoring node for swarm orchestration */
 .agent-node {
     border: 1px solid var(--accent-blue);
     padding: 15px;
@@ -73,16 +76,17 @@ body {
     text-align: center;
     background: rgba(0, 212, 255, 0.05);
     border-radius: 10px;
-    transition: 0.3s;
-    cursor: default; /* تم إزالة pointer لأننا أوقفنا التنقل عند الضغط */
+    transition: all 0.3s ease;
+    cursor: default; 
 }
 
 .agent-node:hover {
     background: rgba(0, 212, 255, 0.1);
     transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
-/* 5. زر الدخول */
+/* 5. Entry Protocol: Primary trigger for system initialization */
 .entry-btn {
     background: transparent;
     border: 2px solid var(--accent-blue);
@@ -90,7 +94,7 @@ body {
     padding: 1rem 3rem;
     cursor: pointer;
     font-weight: 600;
-    transition: 0.4s;
+    transition: all 0.4s ease;
     text-transform: uppercase;
 }
 
@@ -98,4 +102,11 @@ body {
     background: var(--accent-blue);
     color: var(--bg-deep);
     box-shadow: 0 0 20px var(--accent-blue);
+}
+
+/* Intelligence Repository Styling: Ensuring internal overflow management */
+.info-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
 }
