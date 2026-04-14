@@ -1,16 +1,15 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.4 - SYNCHRONIZED)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.5 - DYNAMIC)
  * -------------------------------------------------------------------------
- * Updates: Global Navigation, Dynamic Backend Sync, UI State Orchestration.
+ * Updates: Live threat counter increment, Global Navigation, Hive Sync.
  */
 
-const hiveContainer = document.getElementById('hive-visualization'); // Updated container ID
+const hiveContainer = document.getElementById('hive-visualization');
 let scene, camera, renderer, cubeSwarm = [];
-let systemStatus = { state: 'OPERATIONAL', threats: 0 };
+let systemStatus = { state: 'OPERATIONAL', threats: 374 }; // Starting value as requested
 
 /**
  * 1. Global Navigation Controller
- * Handles view switching between Gateway, Dashboard, and Info views.
  */
 window.navigateTo = function(viewId) {
     document.querySelectorAll('.view-container').forEach(view => {
@@ -25,8 +24,19 @@ window.navigateTo = function(viewId) {
 };
 
 /**
- * 2. Deep Backend Sync
- * Fetches status from root/status.txt to update system state.
+ * 2. Dynamic Threat Counter (Live Simulation)
+ */
+function animateThreatCounter() {
+    const threatCountElement = document.getElementById('threat-count');
+    if (threatCountElement) {
+        // Increment threats randomly to simulate active neutralization
+        threatCount += Math.floor(Math.random() * 2);
+        threatCountElement.innerText = threatCount;
+    }
+}
+
+/**
+ * 3. Deep Backend Sync
  */
 async function syncSystemStatus() {
     try {
@@ -34,31 +44,24 @@ async function syncSystemStatus() {
         const data = await response.text();
         const parts = data.split('|');
         systemStatus.state = parts[0].includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
-        systemStatus.threats = parts[1] ? parts[1].split(':')[1].trim() : 0;
-        
         updateUI();
     } catch (e) { console.warn("Backend Sync Pending..."); }
 }
 
 /**
- * 3. State-Driven UI Orchestrator
- * Updates DOM elements based on the current system status.
+ * 4. State-Driven UI Orchestrator
  */
 function updateUI() {
     const statusFeed = document.getElementById('status-feed');
-    const threatCount = document.getElementById('threat-count');
-    
     if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | PROTECTED`;
-    if (threatCount) threatCount.innerText = systemStatus.threats;
     
-    // Update node styles dynamically
     document.querySelectorAll('.agent-node').forEach(node => {
         node.style.borderColor = systemStatus.state === 'CRITICAL' ? '#ff0033' : '#00d4ff';
     });
 }
 
 /**
- * 4. 3D Environment (Three.js)
+ * 5. 3D Environment (Three.js)
  */
 function init3DEnvironment() {
     const canvas = document.getElementById('core-canvas');
@@ -93,7 +96,7 @@ function animateSwarm() {
 }
 
 /**
- * 5. Hive Mind Initialization
+ * 6. Hive Mind Initialization
  */
 function initHiveMind() {
     if (!hiveContainer) return;
@@ -102,9 +105,9 @@ function initHiveMind() {
     for (let i = 0; i < 12; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
-        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>ACTIVE</span>`;
+        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>ACTIVE</span><br><small>ID:${Math.random().toString(36).substring(7).toUpperCase()}==</small>`;
         node.onclick = () => {
-            alert(`[Level-0 Authorized]\nAgent-${i} Signature: 0x${Math.random().toString(16).slice(2, 10)}\nStatus: ${systemStatus.state}`);
+            alert(`[Protocol-Validated]\nAgent-${i} Signature: 0x${Math.random().toString(16).slice(2, 10)}\nStatus: ${systemStatus.state}`);
         };
         hiveContainer.appendChild(node);
     }
@@ -115,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
     syncSystemStatus();
+    
+    // Intervals for updates
     setInterval(syncSystemStatus, 3000);
+    setInterval(animateThreatCounter, 1500); // Dynamic counter updates every 1.5s
 });
 
 window.addEventListener('resize', () => {
