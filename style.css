@@ -1,13 +1,12 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.4 - FINAL SYNC)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.5 - FINAL GRID)
  * -------------------------------------------------------------------------
- * Updates: Gateway navigation grid, state-driven nodes, and glassmorphism.
+ * Updates: Restored Grid Layout for Dashboard, Optimized Visual Hierarchy.
  */
 
 :root {
     --bg-deep: #00050a;
     --accent-blue: #00d4ff;
-    --accent-glow: rgba(0, 212, 255, 0.2);
     --text-main: #e0e0e0;
     --glass-bg: rgba(0, 20, 40, 0.6);
 }
@@ -17,11 +16,10 @@ body {
     background-color: var(--bg-deep);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
-    overflow-y: auto; 
     min-height: 100vh;
 }
 
-/* 1. Core Canvas: Pass-through layer */
+/* 1. Core Canvas */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -30,30 +28,15 @@ body {
     pointer-events: none; 
 }
 
-/* 2. Gateway Navigation Grid (New) */
-.gateway-nav-grid {
-    display: flex;
+/* 2. Grid System for Dashboard */
+#hive-visualization {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
-    margin-top: 20px;
-    justify-content: center;
+    margin-top: 2rem;
+    width: 100%;
 }
 
-.gateway-link {
-    background: transparent;
-    border: 1px solid var(--accent-blue);
-    color: var(--accent-blue);
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
-}
-
-.gateway-link:hover {
-    background: var(--accent-blue);
-    color: var(--bg-deep);
-}
-
-/* 3. Agent Nodes with State Sync */
 .agent-node {
     border: 1px solid var(--accent-blue);
     padding: 15px;
@@ -71,13 +54,7 @@ body {
     transform: translateY(-3px);
 }
 
-.agent-node.critical {
-    border-color: #ff0033 !important;
-    background: rgba(255, 0, 50, 0.1) !important;
-    color: #ff0033 !important;
-}
-
-/* 4. Global Layout Components */
+/* 3. Global Layout Components */
 .view-container {
     display: none;
     position: relative;
@@ -99,6 +76,18 @@ body {
     width: 100%;
     max-width: 900px; 
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 4. Info View Layout (Maintained Vertical Flow) */
+.info-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    padding: 2rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--accent-blue);
+    border-radius: 20px;
 }
 
 .live-status-box {
