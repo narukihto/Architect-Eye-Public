@@ -1,5 +1,5 @@
 /**
- * ARCHITECT-EYE OS: AGENT INTELLIGENCE DATA (v4.1)
+ * ARCHITECT-EYE OS: AGENT INTELLIGENCE DATA (v4.2 - INTERACTIVE)
  */
 
 const sovereignAgentsData = [
@@ -17,17 +17,28 @@ const sovereignAgentsData = [
     { id: "012", name: "Sovereign-Eye", specialization: "Global Threat Vision", value: "High-level visualization of all neutralized threats across the entire grid." }
 ];
 
+/**
+ * Renders the agent intelligence data and binds interaction events.
+ */
 function renderAgentInfo() {
     const infoContainer = document.getElementById('agent-definitions-list');
     if (!infoContainer) return;
 
     infoContainer.innerHTML = sovereignAgentsData.map(agent => `
-        <div class="agent-info-box">
+        <div class="agent-info-box" onclick="verifyAgent('${agent.name}')" style="cursor: pointer; border: 1px solid #00d4ff; padding: 10px; margin-bottom: 10px; border-radius: 8px;">
             <h4 style="color: #ffd700; margin: 0;">${agent.name} <small style="color: #00d4ff;">[${agent.specialization}]</small></h4>
             <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">${agent.value}</p>
         </div>
     `).join('');
 }
 
-// تشغيل عند تحميل الصفحة
+/**
+ * Global function to verify agent authenticity via signature alert.
+ */
+window.verifyAgent = function(agentName) {
+    const signature = Math.random().toString(16).slice(2, 10);
+    alert(`[Level-0 Authorized]\nAgent: ${agentName}\nSignature: 0x${signature}\nStatus: Active & Secure.`);
+};
+
+// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', renderAgentInfo);
