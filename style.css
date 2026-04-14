@@ -1,7 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.0 - HIVE ACTIVATION)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.2 - HIVE ACTIVATION)
  * -------------------------------------------------------------------------
- * Updates: Added kinetic feedback, pulse animations, and real-time task states.
+ * Updates: Finalized styling for dynamic asset injection and production 
+ * stability across the Sovereign Operational Engine.
  */
 
 :root {
@@ -10,13 +11,14 @@
     --accent-gold: #ffd700;
     --text-main: #e0e0e0;
     --glass-bg: rgba(0, 20, 40, 0.6);
+    --critical-red: #ff0033;
 }
 
-/* 1. Kinetic Hive Grid */
+/* 1. Kinetic Hive Grid - Layout Optimization */
 #hive-visualization {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
     margin-top: 2rem;
     width: 100%;
 }
@@ -31,8 +33,15 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     user-select: none;
-    /* إضافة نبض حيوي خفي */
     animation: idlePulse 4s infinite ease-in-out;
+}
+
+/* Asset Integration Styles */
+.agent-node img {
+    border: 1px solid var(--accent-blue);
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
 @keyframes idlePulse {
@@ -40,23 +49,28 @@
     50% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
 }
 
-/* 2. Operational Task State (Visual Feedback) */
+/* 2. Operational Task States */
 .agent-node.processing {
-    border-color: var(--accent-gold);
+    border-color: var(--accent-gold) !important;
     color: var(--accent-gold);
     background: rgba(255, 215, 0, 0.05);
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
-/* 3. Global Layout Components */
+.agent-node.critical {
+    border-color: var(--critical-red) !important;
+}
+
+/* 3. Global Sovereign UI Components */
 .sovereign-card {
     background: var(--glass-bg);
     border: 1px solid var(--accent-blue);
     padding: 2.5rem;
     border-radius: 20px;
     backdrop-filter: blur(20px);
-    width: 100%;
+    width: 95%;
     max-width: 900px;
+    margin: 0 auto;
     box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
 }
 
@@ -67,8 +81,15 @@
     background: rgba(0, 0, 0, 0.5);
     font-family: 'Courier New', monospace;
     letter-spacing: 1px;
+    color: var(--text-main);
 }
 
-/* إخفاء شريط التمرير الافتراضي للجمالية */
+/* Aesthetics & Scrolling */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-thumb { background: var(--accent-blue); }
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent-blue), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
