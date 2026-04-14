@@ -1,45 +1,64 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.3 - SYNCHRONIZED)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.4 - SYNCHRONIZED)
  * -------------------------------------------------------------------------
- * Updates: Dynamic Node State Sync, Hash Verification, Optimized Render Loop.
+ * Updates: Global Navigation, Dynamic Backend Sync, UI State Orchestration.
  */
 
-const hiveContainer = document.getElementById('agent-definitions-list');
+const hiveContainer = document.getElementById('hive-visualization'); // Updated container ID
 let scene, camera, renderer, cubeSwarm = [];
 let systemStatus = { state: 'OPERATIONAL', threats: 0 };
 
 /**
- * 1. محرك المزامنة المتطور (Deep Backend Sync)
+ * 1. Global Navigation Controller
+ * Handles view switching between Gateway, Dashboard, and Info views.
+ */
+window.navigateTo = function(viewId) {
+    document.querySelectorAll('.view-container').forEach(view => {
+        view.classList.remove('active');
+        view.style.display = 'none';
+    });
+    const target = document.getElementById(viewId);
+    if (target) {
+        target.classList.add('active');
+        target.style.display = 'flex';
+    }
+};
+
+/**
+ * 2. Deep Backend Sync
+ * Fetches status from root/status.txt to update system state.
  */
 async function syncSystemStatus() {
     try {
         const response = await fetch('status.txt?nocache=' + new Date().getTime());
         const data = await response.text();
-        // تنسيق مفترض: "Status: OPERATIONAL|Threats: 225"
         const parts = data.split('|');
         systemStatus.state = parts[0].includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
-        systemStatus.threats = parts[1] ? parts[1].split(':')[1] : 0;
+        systemStatus.threats = parts[1] ? parts[1].split(':')[1].trim() : 0;
         
-        updateUI(); // تحديث الواجهة فور استلام البيانات
-    } catch (e) { console.warn("Sync Pending..."); }
+        updateUI();
+    } catch (e) { console.warn("Backend Sync Pending..."); }
 }
 
 /**
- * 2. تحديث الواجهة والوكلاء بناءً على الحالة (State-Driven UI)
+ * 3. State-Driven UI Orchestrator
+ * Updates DOM elements based on the current system status.
  */
 function updateUI() {
     const statusFeed = document.getElementById('status-feed');
-    if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | THREATS: ${systemStatus.threats}`;
+    const threatCount = document.getElementById('threat-count');
     
-    // تحديث نبض الوكلاء (Visual Sync)
+    if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | PROTECTED`;
+    if (threatCount) threatCount.innerText = systemStatus.threats;
+    
+    // Update node styles dynamically
     document.querySelectorAll('.agent-node').forEach(node => {
         node.style.borderColor = systemStatus.state === 'CRITICAL' ? '#ff0033' : '#00d4ff';
-        node.style.background = systemStatus.state === 'CRITICAL' ? 'rgba(255, 0, 50, 0.1)' : 'rgba(0, 212, 255, 0.05)';
     });
 }
 
 /**
- * 3. تهيئة بيئة 3D (ثابتة)
+ * 4. 3D Environment (Three.js)
  */
 function init3DEnvironment() {
     const canvas = document.getElementById('core-canvas');
@@ -50,9 +69,9 @@ function init3DEnvironment() {
     renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // إضافة مكعبات الوكلاء
     const geometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
     const material = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true });
+    
     for(let i = 0; i < 12; i++) {
         let cube = new THREE.Mesh(geometry, material);
         cube.position.set(Math.random()*10-5, Math.random()*10-5, Math.random()*-10);
@@ -67,7 +86,6 @@ function animateSwarm() {
     cubeSwarm.forEach((cube) => {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
-        // النبض يتزامن مع حالة النظام
         const scale = systemStatus.state === 'CRITICAL' ? 1.5 : 1;
         cube.scale.set(scale, scale, scale);
     });
@@ -75,7 +93,7 @@ function animateSwarm() {
 }
 
 /**
- * 4. تفعيل الوكلاء (Sync Ready)
+ * 5. Hive Mind Initialization
  */
 function initHiveMind() {
     if (!hiveContainer) return;
@@ -84,18 +102,24 @@ function initHiveMind() {
     for (let i = 0; i < 12; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
-        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>${systemStatus.state}</span>`;
+        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>ACTIVE</span>`;
         node.onclick = () => {
-            alert(`[Protocol-Validated]\nAgent-${i} Hash: 0x${Math.random().toString(16).slice(2, 10)}\nThreats Neutralized: ${systemStatus.threats}`);
+            alert(`[Level-0 Authorized]\nAgent-${i} Signature: 0x${Math.random().toString(16).slice(2, 10)}\nStatus: ${systemStatus.state}`);
         };
         hiveContainer.appendChild(node);
     }
 }
 
-// Initialization
+// Initialization Logic
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
     syncSystemStatus();
-    setInterval(syncSystemStatus, 3000); // مزامنة أسرع كل 3 ثوانٍ
+    setInterval(syncSystemStatus, 3000);
+});
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 });
