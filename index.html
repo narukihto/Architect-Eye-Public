@@ -7,8 +7,14 @@
     
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        /* تأمين عدم تداخل الـ canvas مع الأزرار */
+        #core-canvas { pointer-events: none; }
+        .view-container { display: none; }
+        .view-container.active { display: flex; }
+    </style>
 </head>
 <body class="cyber-pulse-bg">
 
@@ -27,8 +33,8 @@
             <header>
                 <h1 class="gradient-text">SYSTEM CORE</h1>
                 <div class="nav-links">
-                    <span onclick="navigateTo('main-view')">BACK TO GATEWAY</span> | 
-                    <span onclick="navigateTo('info-view')">INTELLIGENCE REPOSITORY</span>
+                    <span onclick="navigateTo('main-view')" style="cursor:pointer;">BACK TO GATEWAY</span> | 
+                    <span onclick="navigateTo('info-view')" style="cursor:pointer;">INTELLIGENCE REPOSITORY</span>
                 </div>
                 <div class="integrity-counter">THREATS NEUTRALIZED: <span id="threat-count">0</span></div>
             </header>
@@ -44,20 +50,10 @@
 
     <div id="info-view" class="view-container">
         <div class="info-card">
-            <button class="back-btn" onclick="navigateTo('dashboard-view')">← RETURN TO CORE</button>
+            <button class="back-btn" onclick="navigateTo('dashboard-view')" style="cursor:pointer;">← RETURN TO CORE</button>
             <h2 class="gold-text">SWARM INTELLIGENCE & ENTERPRISE VALUE</h2>
             <div class="info-content">
                 <p>The Architect-Eye system orchestrates a 12-agent autonomous hive mind designed for next-generation digital defense and optimization.</p>
-                
-                <section class="value-proposition">
-                    <h3>Enterprise Benefits:</h3>
-                    <ul>
-                        <li><strong>Scalable Security:</strong> Continuous monitoring across 12 specialized protocols.</li>
-                        <li><strong>Autonomous Optimization:</strong> Gas-efficient blockchain operations and liquidity management.</li>
-                        <li><strong>Deepfake Defense:</strong> Real-time content authenticity verification via SHA3-256 protocols.</li>
-                    </ul>
-                </section>
-                
                 <div id="agent-definitions-list"></div>
             </div>
         </div>
