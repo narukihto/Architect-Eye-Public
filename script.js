@@ -1,20 +1,19 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.3 - STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.5 - THREAT STABLE)
  * -------------------------------------------------------------------------
- * Updates: Integrated View Controller, stabilized asset loading, and 
- * reinforced logic for cross-view synchronization.
+ * Updates: Finalized Threat Engine, integrated autonomous anomaly detection,
+ * stabilized UI synchronization, and optimized process memory handling.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 let systemStatus = { state: 'OPERATIONAL' };
 let threatCount = 0;
 
-// Asset mapping: 12 agents, mapped to /space/
+// Asset mapping: 12 agents, mapped to available images in /space/
 const agentAssets = ["nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg", "nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg"];
 
 /**
  * 1. View Controller
- * Manages UI layer visibility to prevent layout collapse.
  */
 window.navigateTo = function(viewId) {
     document.querySelectorAll('.view-container').forEach(view => {
@@ -27,7 +26,18 @@ window.navigateTo = function(viewId) {
 };
 
 /**
- * 2. Hive Mind Initializer
+ * 2. Threat Counter Engine
+ */
+function incrementThreats() {
+    threatCount++;
+    const counterElement = document.getElementById('threat-count');
+    if (counterElement) {
+        counterElement.innerText = threatCount;
+    }
+}
+
+/**
+ * 3. Hive Mind Initializer
  */
 function initHiveMind() {
     const grid = document.getElementById('hive-visualization');
@@ -47,7 +57,7 @@ function initHiveMind() {
 }
 
 /**
- * 3. Autonomous Agent Processor
+ * 4. Autonomous Agent Processor
  */
 function activateAgent(index) {
     const nodes = document.querySelectorAll('.agent-node');
@@ -68,6 +78,13 @@ function activateAgent(index) {
         `;
         
         setTimeout(() => {
+            // Threat Detection Logic (15% Probability)
+            const isAnomaly = Math.random() < 0.15;
+            if (isAnomaly && (currentTask === "SCANNING" || currentTask === "VERIFYING")) {
+                incrementThreats();
+                node.style.borderColor = "#ff0033"; // Alert styling
+            }
+
             node.classList.remove('processing');
             node.innerHTML = `
                 <img src="space/${agentAssets[index]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px;">
@@ -80,7 +97,7 @@ function activateAgent(index) {
 }
 
 /**
- * 4. Synchronization Engine
+ * 5. Synchronization Engine
  */
 async function syncSystemStatus() {
     try {
@@ -104,11 +121,9 @@ function updateUI() {
 
 // Initialization Logic
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure 3D background exists
     if (typeof init3DEnvironment === 'function') init3DEnvironment();
     
     initHiveMind();
-    if (typeof startLiveThreatCounter === 'function') startLiveThreatCounter();
     syncSystemStatus();
     
     setTimeout(() => {
