@@ -1,62 +1,124 @@
-/* * Architect-Eye: Sovereign Orchestration System (Integrated 3D UI)
- * Style: Cyber-Ethereal / Glassmorphism
+/**
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v3.0)
+ * Style: Cyber-Ethereal / Adaptive Glassmorphism
+ * Architecture: Optimized 12-Agent Swarm Layout (5-Column Grid)
  */
 
+/* ==========================================================================
+   Core Design Variables
+   ========================================================================== */
 :root {
-    --bg-deep: #030303;
+    /* Primary Color Palette */
+    --bg-deep: #030303;               /* The Void */
+    --text-main: #e0e0e0;              /* Digital Gray */
+    --accent-blue: #00d4ff;            /* Operational Blue */
+    --accent-purple: #7000ff;          /* Authorization Purple */
+    --gold: #ffd700;                   /* System Core Gold */
+    --danger-red: #ff3333;             /* Intrusion Alert Red */
+
+    /* Glassmorphism Configuration */
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --accent-blue: #00d4ff;
-    --accent-purple: #7000ff;
-    --danger-red: #ff3333;
-    --text-main: #e0e0e0;
-    --gold: #ffd700;
+    
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-mono: 'Courier New', monospace;
 }
 
+/* ==========================================================================
+   Body & Background Configuration
+   ========================================================================== */
 body {
-    background-color: var(--bg-deep);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: var(--font-primary);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    
+    /* Enable vertical scrolling for small screens; prevent clipping */
+    overflow-y: auto;
 }
 
-/* 3D Canvas Layer */
+/* ==========================================================================
+   3D Visualization Layer (Three.js Canvas)
+   ========================================================================== */
 #core-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 0; /* خلف الواجهة */
+    
+    /* Anchored behind the UI interface */
+    z-index: 0; 
 }
 
-/* Dashboard Wrapper */
+/* ==========================================================================
+   Main Sovereign UI Dashboard (Glassmorphism Card)
+   ========================================================================== */
 .sovereign-card {
+    /* Anchored in front of the 3D Core Visualization */
     position: relative;
-    z-index: 1; /* أمام النواة */
+    z-index: 1; 
+
+    /* Adaptive layout */
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem 0; /* Ensures space on mobile view */
+    padding: 2.5rem;
+    
+    /* Glassmorphism Base and Blur */
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
-    padding: 2.5rem;
-    width: 90%;
-    max-width: 1000px;
+    
+    /* Standard Shadow */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+
+    /* Smooth transition for the Sovereign Glow effect */
+    transition: box-shadow 0.6s cubic-bezier(0.19, 1, 0.22, 1), 
+                border-color 0.6s ease,
+                transform 0.4s ease;
 }
 
+/* ==========================================================================
+   The Sovereign Glow: Hover Effect for the Entire Card
+   ========================================================================== */
+.sovereign-card:hover {
+    /* Elevation effect */
+    transform: translateY(-8px);
+    
+    /* * Multi-layered energetic glow:
+     * 1. Tight blue inner halo
+     * 2. Diffused purple outer aura
+     * 3. Soft deep background illumination
+     */
+    box-shadow: 
+        0 0 15px 2px rgba(0, 212, 255, 0.4),   /* Inner Halo: Blue */
+        0 0 30px 10px rgba(112, 0, 255, 0.2),  /* Outer Aura: Purple */
+        0 40px 100px 10px rgba(0, 0, 0, 0.9);   /* Deep Illumination */
+
+    /* Intense border stabilization */
+    border-color: rgba(0, 212, 255, 0.6);
+}
+
+/* ==========================================================================
+   Header & Title Elements
+   ========================================================================== */
 .gradient-text {
+    /* Hybrid Blue-Purple Gradient Title */
     background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 3rem;
     margin: 0;
     letter-spacing: -1px;
+    font-weight: 700;
 }
 
 .subtitle {
@@ -67,8 +129,11 @@ body {
     letter-spacing: 2px;
 }
 
+/* ==========================================================================
+   Operational Counters & Live Feeds
+   ========================================================================== */
 .integrity-counter {
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-mono);
     color: var(--accent-blue);
     border: 1px solid var(--accent-blue);
     padding: 0.5rem 1rem;
@@ -80,53 +145,79 @@ body {
 }
 
 .live-status-box {
+    /* Internal Glass panel for status updates */
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--accent-blue);
     padding: 1rem;
     border-radius: 8px;
     margin: 25px 0;
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--accent-blue);
     text-align: center;
 }
 
-/* Agent Grid */
+/* ==========================================================================
+   Adaptive Agent Hive Visualization (Grid)
+   ========================================================================== */
 .agent-grid {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
+    
+    /* !!! Sovereign Alignment Protocol: Optimized for 5 columns !!! */
+    /* Resolves vertical layout issue and restores width symmetry */
+    grid-template-columns: repeat(5, 1fr) !important;
+    
     gap: 1.5rem;
     margin-top: 2rem;
+    width: 100%;
 }
 
+/* ==========================================================================
+   Individual Agent Node Styling
+   ========================================================================== */
 .agent-node {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    padding: 1rem;
+    padding: 1.2rem;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
     backdrop-filter: blur(5px);
+    
+    /* Authorization Pulse Transition */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
+/* Agent Node Hover effect */
 .agent-node:hover {
     transform: translateY(-5px);
     border-color: var(--accent-blue);
     box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
 }
 
+/* Agent Critical Intrusion State (RED) */
 .agent-node.critical {
     border-color: var(--danger-red);
     box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
-    animation: shake 0.5s infinite;
+    
+    /* Energetic alert animation */
+    animation: criticalShake 0.5s infinite;
 }
 
-@keyframes shake {
+/* ==========================================================================
+   Animations & Keyframes
+   ========================================================================== */
+/* Critical State Alert Animation (Shake) */
+@keyframes criticalShake {
     0% { transform: translate(1px, 1px); }
     50% { transform: translate(-1px, -1px); }
     100% { transform: translate(1px, 1px); }
 }
 
+/* ==========================================================================
+   System Footer
+   ========================================================================== */
 footer {
     text-align: center;
     margin-top: 2.5rem;
