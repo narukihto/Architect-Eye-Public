@@ -1,83 +1,46 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v3.0)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v3.1 - BLUE MATRIX)
  * -------------------------------------------------------------------------
- * Style: Cyber-Ethereal / Adaptive Glassmorphism
- * Feature: Dynamic Energy Pulse & Triple-View Management
- * -------------------------------------------------------------------------
- * AUTHOR: ISSAC ANDREW (THE ARCHITECT)
+ * Style: Cyber-Ethereal / Blue Matrix 3D
+ * Feature: Dynamic Blue Pulse & 3D Cube Swarm
  */
 
-/* ==========================================================================
-   Core Design Variables
-   ========================================================================== */
 :root {
-    --bg-deep: #030303;
-    --text-main: #e0e0e0;
+    --bg-deep: #00050a;
     --accent-blue: #00d4ff;
-    --accent-purple: #7000ff;
-    --gold: #ffd700;
-    --danger-red: #ff3333;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-glow: rgba(0, 212, 255, 0.2);
+    --text-main: #e0e0e0;
+    --glass-bg: rgba(0, 20, 40, 0.6);
+    --glass-border: rgba(0, 212, 255, 0.3);
 }
 
-/* ==========================================================================
-   Global Configuration
-   ========================================================================== */
 body {
     margin: 0;
-    padding: 0;
     background-color: var(--bg-deep);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
-    overflow: hidden; /* Prevent scrolling during 3D navigation */
+    overflow: hidden;
     height: 100vh;
-    width: 100vw;
 }
 
-/* ==========================================================================
-   The Blue Pulse Protocol (Energy Flicker)
-   ========================================================================== */
-.cyber-pulse-bg::after {
+/* Blue Pulse Effect - Global Overlay */
+body::after {
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    /* Radial energy gradient */
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 80%);
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
     pointer-events: none;
-    z-index: 99; /* Below the UI, above the 3D Background */
-    animation: energyFlicker 6s infinite ease-in-out;
+    animation: bluePulse 4s infinite alternate;
+    z-index: 1;
 }
 
-@keyframes energyFlicker {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.05); }
-    52% { opacity: 0.2; } /* Instant flicker */
-    54% { opacity: 0.8; }
+@keyframes bluePulse {
+    from { opacity: 0.3; transform: scale(1); }
+    to { opacity: 0.7; transform: scale(1.05); }
 }
 
-/* ==========================================================================
-   View Management Layer
-   ========================================================================== */
-.view-container {
-    display: none; /* Inactive views are hidden */
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    z-index: 101;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.view-container.active {
-    display: flex; /* Activation via Script.js */
-}
-
-/* ==========================================================================
-   3D Canvas Layer
-   ========================================================================== */
+/* 3D Canvas Layer */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -85,26 +48,51 @@ body {
     z-index: 0;
 }
 
-/* ==========================================================================
-   Gateway (Main Landing) UI
-   ========================================================================== */
-.glass-gate {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    padding: 4rem;
-    border-radius: 40px;
-    border: 1px solid var(--glass-border);
-    text-align: center;
-    transition: transform 0.5s ease;
+/* View Container Management */
+.view-container {
+    display: none;
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
-.glitch-text {
-    font-size: 4rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 5px;
+.view-container.active { display: flex; }
+
+/* Sovereign Card - Cyber Glassmorphism */
+.sovereign-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--accent-blue);
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    width: 80%;
+    max-width: 1000px;
+}
+
+/* Tactical Agent Grid */
+.agent-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 2rem;
+}
+
+.agent-node {
+    border: 1px solid var(--accent-blue);
+    padding: 15px;
+    color: var(--accent-blue);
+    text-align: center;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.agent-node:hover {
+    background: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 15px var(--accent-blue);
 }
 
 .entry-btn {
@@ -112,111 +100,11 @@ body {
     border: 1px solid var(--accent-blue);
     color: var(--accent-blue);
     padding: 1rem 3rem;
-    margin-top: 2rem;
-    font-weight: bold;
-    letter-spacing: 3px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: 0.3s;
 }
 
 .entry-btn:hover {
     background: var(--accent-blue);
-    color: #000;
-    box-shadow: 0 0 30px var(--accent-blue);
+    color: black;
 }
-
-/* ==========================================================================
-   Sovereign Dashboard UI
-   ========================================================================== */
-.sovereign-card {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--glass-border);
-    padding: 2.5rem;
-    border-radius: 24px;
-    width: 90%;
-    max-width: 1100px;
-}
-
-.nav-links span {
-    cursor: pointer;
-    font-size: 0.8rem;
-    opacity: 0.6;
-    transition: 0.3s;
-}
-
-.nav-links span:hover {
-    opacity: 1;
-    color: var(--accent-blue);
-}
-
-/* 5-Column Tactical Grid */
-.agent-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr) !important;
-    gap: 1.2rem;
-    margin-top: 2rem;
-}
-
-.agent-node {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    padding: 1.2rem;
-    border-radius: 12px;
-    text-align: center;
-    transition: 0.4s;
-}
-
-.agent-node.critical {
-    border-color: var(--danger-red);
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
-    animation: shake 0.5s infinite;
-}
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px); }
-    50% { transform: translate(-1px, -1px); }
-    100% { transform: translate(1px, 1px); }
-}
-
-/* ==========================================================================
-   Intelligence Repository (Info View)
-   ========================================================================== */
-.info-card {
-    background: #080808;
-    border-left: 5px solid var(--gold);
-    padding: 3.5rem;
-    width: 85%;
-    max-width: 900px;
-    border-radius: 0 20px 20px 0;
-    overflow-y: auto;
-    max-height: 85vh;
-}
-
-.gold-text {
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
-
-.value-proposition ul {
-    list-style: none;
-    padding: 0;
-}
-
-.value-proposition li {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 0.5rem;
-}
-
-.back-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-main);
-    opacity: 0.5;
-    cursor: pointer;
-    margin-bottom: 1rem;
-}
-
-.back-btn:hover { opacity: 1; color: var(--gold); }
