@@ -11,8 +11,6 @@ let currentSystemState = 'OPERATIONAL';
 
 /**
  * Initializes the 3D Sovereign Environment
- * 1. Loads the 6 space images (CubeMap)
- * 2. Initializes the Blue Matrix (Cube Swarm)
  */
 function init3DEnvironment() {
     const canvas = document.getElementById('core-canvas');
@@ -26,7 +24,7 @@ function init3DEnvironment() {
 
     // --- INTEGRATION: Sovereign Space CubeMap ---
     const loader = new THREE.CubeTextureLoader();
-    loader.setPath('space/'); // Ensure files are in this folder
+    loader.setPath('space/'); 
 
     scene.background = loader.load([
         'px.jpg', 'nx.jpg', 
@@ -54,35 +52,41 @@ function init3DEnvironment() {
 }
 
 /**
- * Main Animation Loop: The Blue Matrix Rotation
+ * Main Animation Loop
  */
 function animateSwarm() {
     requestAnimationFrame(animateSwarm);
-    
-    // Animate individual cubes in the matrix
-    cubeSwarm.forEach((cube, index) => {
+    cubeSwarm.forEach((cube) => {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
-        
-        // Pulse effect based on system state
         const pulse = currentSystemState === 'CRITICAL' ? Math.sin(Date.now() * 0.01) * 0.5 : 0;
         cube.scale.set(1 + pulse, 1 + pulse, 1 + pulse);
     });
-    
     renderer.render(scene, camera);
 }
 
-// --- Agent Hive Logic ---
+/**
+ * Agent Hive Logic: Orchestration Protocols
+ * Updated with Navigation to Info View
+ */
 function initHiveMind() {
     hiveContainer.innerHTML = '';
     for (let i = 0; i < 12; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
         node.id = `agent-${i}`;
-        node.innerHTML = `<strong>AGENT-${i}</strong><br><span class="status">ACTIVE</span>`;
+        node.innerHTML = `
+            <strong>AGENT-${i}</strong><br>
+            <span class="status">ACTIVE</span><br>
+            <small style="font-size:0.6rem; opacity:0.7">ID:${btoa(i).substring(0,6)}</small>
+        `;
+        
+        // ربط الضغط مباشرة بواجهة المعلومات
+        node.style.cursor = "pointer"; 
         node.addEventListener('click', () => {
-            alert(`[Authorized] Agent-${i} System Secure.`);
+            navigateTo('info-view'); 
         });
+        
         hiveContainer.appendChild(node);
     }
 }
