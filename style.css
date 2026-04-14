@@ -1,30 +1,55 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.2 - BLUE MATRIX)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.3 - SYNCHRONIZED)
  * -------------------------------------------------------------------------
- * Architectural Enhancements: Flex-based responsive grid, pointer-event 
- * pass-through for WebGL layers, and hardware-accelerated glassmorphism.
+ * Updates: State-driven dynamic styling, visual feedback for sync-status,
+ * and high-fidelity interaction states.
  */
 
-:root {
-    --bg-deep: #00050a;
-    --accent-blue: #00d4ff;
-    --accent-glow: rgba(0, 212, 255, 0.2);
-    --text-main: #e0e0e0;
-    --glass-bg: rgba(0, 20, 40, 0.6);
+/* إضافة أنماط الحالة الحرجة للنظام */
+.agent-node.critical {
+    border-color: #ff0033 !important;
+    background: rgba(255, 0, 50, 0.1) !important;
+    color: #ff0033 !important;
+    box-shadow: 0 0 15px rgba(255, 0, 50, 0.2);
 }
 
-body {
-    margin: 0;
-    background-color: var(--bg-deep);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    /* Enable vertical scrolling to prevent content clipping on smaller screens */
-    overflow-y: auto; 
-    min-height: 100vh;
+/* تحديث الـ Agent Node لدعم المزامنة */
+.agent-node {
+    border: 1px solid var(--accent-blue);
+    padding: 15px;
+    color: var(--accent-blue);
+    text-align: center;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer; /* جعل المؤشر دائماً يشير للتفاعل */
+    user-select: none;
 }
 
-/* 1. Core Canvas Layer: Pass-through pointer events to underlying DOM */
+.agent-node:hover {
+    background: rgba(0, 212, 255, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* تنسيق عداد التهديدات */
+.integrity-counter {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* تنسيق صندوق الحالة المباشر */
+.live-status-box {
+    margin: 15px 0;
+    padding: 10px;
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* بقية التنسيقات ثابتة للحفاظ على استقرار الواجهة */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -33,7 +58,6 @@ body {
     pointer-events: none; 
 }
 
-/* 2. View Container: Adaptive flexbox for centralized dashboard layout */
 .view-container {
     display: none;
     position: relative;
@@ -43,12 +67,9 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    box-sizing: border-box;
 }
-
 .view-container.active { display: flex; }
 
-/* 3. Sovereign Card: Cyber-glassmorphism wrapper for operational data */
 .sovereign-card {
     background: var(--glass-bg);
     border: 1px solid var(--accent-blue);
@@ -58,55 +79,4 @@ body {
     width: 100%;
     max-width: 900px; 
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-}
-
-/* 4. Agent Grid: Dynamic responsiveness for the 12-node swarm */
-.agent-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 2rem;
-}
-
-/* Agent Node: Static monitoring node for swarm orchestration */
-.agent-node {
-    border: 1px solid var(--accent-blue);
-    padding: 15px;
-    color: var(--accent-blue);
-    text-align: center;
-    background: rgba(0, 212, 255, 0.05);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    cursor: default; 
-}
-
-.agent-node:hover {
-    background: rgba(0, 212, 255, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
-}
-
-/* 5. Entry Protocol: Primary trigger for system initialization */
-.entry-btn {
-    background: transparent;
-    border: 2px solid var(--accent-blue);
-    color: var(--accent-blue);
-    padding: 1rem 3rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.4s ease;
-    text-transform: uppercase;
-}
-
-.entry-btn:hover {
-    background: var(--accent-blue);
-    color: var(--bg-deep);
-    box-shadow: 0 0 20px var(--accent-blue);
-}
-
-/* Intelligence Repository Styling: Ensuring internal overflow management */
-.info-content {
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 10px;
 }
