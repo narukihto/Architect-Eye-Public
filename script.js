@@ -1,8 +1,7 @@
 /**
  * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.0 - HIVE ACTIVATION)
  * -------------------------------------------------------------------------
- * Updates: Real-time task simulation per agent, dynamic ID rotation, 
- * and active task cycle visual feedback.
+ * Updates: Fully integrated with CSS (v5.0) task states via class toggling.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
@@ -11,8 +10,8 @@ let systemStatus = { state: 'OPERATIONAL' };
 let threatCount = 0;
 
 /**
- * 1. Autonomous Agent Processor (Active Task Cycle)
- * Each agent runs an independent loop simulating specialized workloads.
+ * 1. Autonomous Agent Processor
+ * Now toggles '.processing' class to trigger CSS (v5.0) kinetic feedback.
  */
 function activateAgent(index) {
     const node = document.querySelector(`.agent-node:nth-child(${index + 1})`);
@@ -24,17 +23,17 @@ function activateAgent(index) {
         const currentTask = taskTypes[Math.floor(Math.random() * taskTypes.length)];
         const newId = Math.random().toString(36).substring(7).toUpperCase();
         
-        // Visual feedback: Highlight active task
-        node.style.borderColor = '#ffd700'; 
+        // Trigger CSS (v5.0) Processing State
+        node.classList.add('processing');
         node.innerHTML = `<strong>AGENT-${index}</strong><br><span>${currentTask}...</span><br><small>ID:${newId}==</small>`;
         
         // Return to idle state after task completion
         setTimeout(() => {
-            node.style.borderColor = '#00d4ff';
+            node.classList.remove('processing');
             node.innerHTML = `<strong>AGENT-${index}</strong><br><span>ACTIVE</span><br><small>ID:${newId}==</small>`;
         }, 1200);
         
-    }, Math.random() * 4000 + 2000); // Random execution interval
+    }, Math.random() * 4000 + 2000); 
 }
 
 /**
@@ -49,7 +48,7 @@ function startLiveThreatCounter() {
 }
 
 /**
- * 3. Synchronization & UI (Logic Maintained)
+ * 3. Synchronization & UI Orchestrator
  */
 async function syncSystemStatus() {
     try {
@@ -64,20 +63,22 @@ function updateUI() {
     const statusFeed = document.getElementById('status-feed');
     if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | PROTECTED`;
     
+    // Reset border colors on global state change
     document.querySelectorAll('.agent-node').forEach(node => {
-        node.style.borderColor = systemStatus.state === 'CRITICAL' ? '#ff0033' : '#00d4ff';
+        if (!node.classList.contains('processing')) {
+            node.style.borderColor = systemStatus.state === 'CRITICAL' ? '#ff0033' : '#00d4ff';
+        }
     });
 }
 
-// ... (Three.js and Initialization code remains same) ...
-
+// Initialization Logic
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
     startLiveThreatCounter();
     syncSystemStatus();
     
-    // Launch individual processing loops for all 12 agents
+    // Launch autonomous processing cycles for the 12-Agent Grid
     for (let i = 0; i < 12; i++) {
         activateAgent(i);
     }
