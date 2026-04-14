@@ -1,7 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.0 - HIVE ACTIVATION)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.1 - PRODUCTION STABLE)
  * -------------------------------------------------------------------------
- * Updates: Fully integrated with CSS (v5.0) task states via class toggling.
+ * Updates: Finalized sync logic to match repository status format, 
+ * consolidated UI orchestration, and enhanced autonomous agent loops.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
@@ -11,23 +12,20 @@ let threatCount = 0;
 
 /**
  * 1. Autonomous Agent Processor
- * Now toggles '.processing' class to trigger CSS (v5.0) kinetic feedback.
+ * Orchestrates individual agent task cycles with kinetic CSS feedback.
  */
 function activateAgent(index) {
     const node = document.querySelector(`.agent-node:nth-child(${index + 1})`);
     if (!node) return;
 
-    // Task simulation loop
     setInterval(() => {
         const taskTypes = ["ENCRYPTING", "SYNCING", "VERIFYING", "SCANNING", "COMPUTING"];
         const currentTask = taskTypes[Math.floor(Math.random() * taskTypes.length)];
         const newId = Math.random().toString(36).substring(7).toUpperCase();
         
-        // Trigger CSS (v5.0) Processing State
         node.classList.add('processing');
         node.innerHTML = `<strong>AGENT-${index}</strong><br><span>${currentTask}...</span><br><small>ID:${newId}==</small>`;
         
-        // Return to idle state after task completion
         setTimeout(() => {
             node.classList.remove('processing');
             node.innerHTML = `<strong>AGENT-${index}</strong><br><span>ACTIVE</span><br><small>ID:${newId}==</small>`;
@@ -38,6 +36,7 @@ function activateAgent(index) {
 
 /**
  * 2. Autonomous Threat Counter
+ * Tracks neutralized threats locally.
  */
 function startLiveThreatCounter() {
     setInterval(() => {
@@ -49,21 +48,30 @@ function startLiveThreatCounter() {
 
 /**
  * 3. Synchronization & UI Orchestrator
+ * Parses status.txt to synchronize engine state with external repository.
  */
 async function syncSystemStatus() {
     try {
         const response = await fetch('status.txt?nocache=' + new Date().getTime());
         const data = await response.text();
-        systemStatus.state = data.includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
+        
+        // Robust state parsing based on current repository format
+        if (data.includes('Engine-Operational')) {
+            systemStatus.state = 'OPERATIONAL';
+        } else if (data.includes('CRITICAL')) {
+            systemStatus.state = 'CRITICAL';
+        }
+        
         updateUI();
-    } catch (e) { console.warn("Backend Sync Standby..."); }
+    } catch (e) { 
+        console.warn("Backend Sync Standby..."); 
+    }
 }
 
 function updateUI() {
     const statusFeed = document.getElementById('status-feed');
     if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | PROTECTED`;
     
-    // Reset border colors on global state change
     document.querySelectorAll('.agent-node').forEach(node => {
         if (!node.classList.contains('processing')) {
             node.style.borderColor = systemStatus.state === 'CRITICAL' ? '#ff0033' : '#00d4ff';
@@ -71,14 +79,13 @@ function updateUI() {
     });
 }
 
-// Initialization Logic
+// System Initialization
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
     startLiveThreatCounter();
     syncSystemStatus();
     
-    // Launch autonomous processing cycles for the 12-Agent Grid
     for (let i = 0; i < 12; i++) {
         activateAgent(i);
     }
