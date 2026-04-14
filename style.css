@@ -1,8 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.3 - STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.4 - KINETIC STABLE)
  * -------------------------------------------------------------------------
- * Updates: Resolved layout overlap issues, finalized Z-index layering for 
- * Three.js integration, and optimized glass-morphism transparency.
+ * Updates: Finalized hover animations for agent intelligence cards and 
+ * consolidated global UI responsiveness.
  */
 
 :root {
@@ -10,7 +10,7 @@
     --accent-blue: #00d4ff;
     --accent-gold: #ffd700;
     --text-main: #e0e0e0;
-    --glass-bg: rgba(0, 10, 20, 0.7); /* Deepened glass for contrast */
+    --glass-bg: rgba(0, 10, 20, 0.7);
     --critical-red: #ff0033;
 }
 
@@ -25,9 +25,9 @@ body, html {
     overflow-x: hidden;
 }
 
-/* 1. View Controller - Preventing Layout Overlap */
+/* 1. View Controller */
 .view-container {
-    display: none; /* Hide all views by default */
+    display: none;
     width: 100%;
     height: 100vh;
     padding: 20px;
@@ -35,20 +35,20 @@ body, html {
 }
 
 .view-container.active {
-    display: flex; /* Show active view */
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-/* 2. Three.js Background Layer */
+/* 2. Core Background Layer */
 #core-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Ensure canvas stays behind UI */
+    z-index: -1;
 }
 
 /* 3. Sovereign UI Components */
@@ -63,7 +63,7 @@ body, html {
     box-shadow: 0 0 40px rgba(0, 212, 255, 0.15);
 }
 
-/* 4. Hive Visualization Grid */
+/* 4. Hive & Intelligence Grid */
 .agent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -90,13 +90,25 @@ body, html {
     margin-bottom: 10px;
 }
 
+/* Agent Info Box Hover Effects */
+.agent-info-box {
+    transition: all 0.3s ease;
+}
+
+.agent-info-box:hover {
+    background: rgba(0, 212, 255, 0.15) !important;
+    transform: translateX(10px);
+    border-color: var(--accent-gold) !important;
+}
+
+/* 5. Operational Task States */
 .agent-node.processing {
     border-color: var(--accent-gold) !important;
     color: var(--accent-gold);
     transform: scale(1.03);
 }
 
-/* 5. UI Elements */
+/* 6. UI Elements & Aesthetics */
 .live-status-box {
     margin: 15px 0;
     padding: 15px;
