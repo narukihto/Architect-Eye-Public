@@ -1,8 +1,7 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.0 - BLUE MATRIX)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.1 - BLUE MATRIX)
  * -------------------------------------------------------------------------
- * Architecture: Optimized 3D Cube Swarm + Sovereign CubeMap Environment
- * Status: Blue Matrix Operational
+ * Features: 3D Swarm, Backend Sync (status.txt), Logic separation.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
@@ -10,53 +9,60 @@ let scene, camera, renderer, cubeSwarm = [];
 let currentSystemState = 'OPERATIONAL';
 
 /**
- * دالة التنقل (Navigation Logic)
- * تقوم بتبديل الطبقات بين الواجهات
+ * 1. محرك المزامنة (Backend Link)
+ * يسحب البيانات من status.txt المحدث عبر GitHub Actions
  */
-function navigateTo(viewId) {
-    // 1. إخفاء جميع الحاويات
-    document.querySelectorAll('.view-container').forEach(view => {
-        view.classList.remove('active');
-    });
-
-    // 2. إظهار الحاوية المستهدفة
-    const target = document.getElementById(viewId);
-    if (target) {
-        target.classList.add('active');
+async function syncSystemStatus() {
+    try {
+        const response = await fetch('status.txt?nocache=' + new Date().getTime());
+        const data = await response.text();
+        
+        const statusFeed = document.getElementById('status-feed');
+        if (statusFeed) {
+            statusFeed.innerText = "CORE: " + data.split('|')[0].replace('Status: ', '');
+        }
+        
+        // تحديث حالة النظام بناءً على البيانات
+        if (data.includes('CRITICAL')) currentSystemState = 'CRITICAL';
+        else currentSystemState = 'OPERATIONAL';
+        
+    } catch (error) {
+        console.warn("Backend Sync Pending...");
     }
 }
 
 /**
- * Initializes the 3D Sovereign Environment
+ * 2. منطق التنقل (Navigation)
+ */
+function navigateTo(viewId) {
+    document.querySelectorAll('.view-container').forEach(view => {
+        view.classList.remove('active');
+        view.style.display = 'none';
+    });
+    const target = document.getElementById(viewId);
+    if (target) {
+        target.classList.add('active');
+        target.style.display = 'flex';
+    }
+}
+
+/**
+ * 3. تهيئة بيئة 3D
  */
 function init3DEnvironment() {
     const canvas = document.getElementById('core-canvas');
     scene = new THREE.Scene();
-
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
-
     renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // --- INTEGRATION: Sovereign Space CubeMap ---
     const loader = new THREE.CubeTextureLoader();
     loader.setPath('space/'); 
+    scene.background = loader.load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']);
 
-    scene.background = loader.load([
-        'px.jpg', 'nx.jpg', 
-        'py.jpg', 'ny.jpg', 
-        'pz.jpg', 'nz.jpg'
-    ]);
-
-    // --- BLUE MATRIX: Cube Swarm Protocol ---
     const geometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
-    const material = new THREE.MeshBasicMaterial({ 
-        color: 0x00d4ff, 
-        wireframe: true,
-        transparent: true,
-        opacity: 0.7 
-    });
+    const material = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true, transparent: true, opacity: 0.7 });
 
     for(let i = 0; i < 20; i++) {
         let cube = new THREE.Mesh(geometry, material);
@@ -64,26 +70,23 @@ function init3DEnvironment() {
         scene.add(cube);
         cubeSwarm.push(cube);
     }
-
     animateSwarm();
 }
 
-/**
- * Main Animation Loop
- */
 function animateSwarm() {
     requestAnimationFrame(animateSwarm);
     cubeSwarm.forEach((cube) => {
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
-        const pulse = currentSystemState === 'CRITICAL' ? Math.sin(Date.now() * 0.01) * 0.5 : 0;
+        const pulse = currentSystemState === 'CRITICAL' ? Math.sin(Date.now() * 0.005) * 2 : 0;
         cube.scale.set(1 + pulse, 1 + pulse, 1 + pulse);
     });
     renderer.render(scene, camera);
 }
 
 /**
- * Agent Hive Logic: Orchestration Protocols
+ * 4. منطق الوكلاء (Hive Mind)
+ * تم إزالة navigateTo لجعل الضغط مخصصاً للمراقبة فقط
  */
 function initHiveMind() {
     if (!hiveContainer) return;
@@ -91,20 +94,9 @@ function initHiveMind() {
     for (let i = 0; i < 12; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
-        node.id = `agent-${i}`;
-        // استخدام الأرقام الست عشرية أو الترميز للـ ID
-        node.innerHTML = `
-            <strong>AGENT-${i}</strong><br>
-            <span class="status">ACTIVE</span><br>
-            <small style="font-size:0.6rem; opacity:0.7">ID:${btoa(i).substring(0,6)}</small>
-        `;
-        
-        // ربط الضغط مباشرة بواجهة المعلومات
-        node.style.cursor = "pointer"; 
-        node.addEventListener('click', () => {
-            navigateTo('info-view'); 
-        });
-        
+        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>ACTIVE</span>`;
+        // الضغط لا يغير الواجهة، بل يرسل إشارة في الـ Console (يمكنك ربطها بـ Modal مستقبلاً)
+        node.onclick = () => console.log(`Agent ${i} Querying...`);
         hiveContainer.appendChild(node);
     }
 }
@@ -113,6 +105,8 @@ function initHiveMind() {
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
+    syncSystemStatus();
+    setInterval(syncSystemStatus, 5000); // مزامنة كل 5 ثوانٍ
 });
 
 window.addEventListener('resize', () => {
