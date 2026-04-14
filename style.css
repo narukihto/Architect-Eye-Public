@@ -1,55 +1,27 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.3 - SYNCHRONIZED)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.4 - FINAL SYNC)
  * -------------------------------------------------------------------------
- * Updates: State-driven dynamic styling, visual feedback for sync-status,
- * and high-fidelity interaction states.
+ * Updates: Gateway navigation grid, state-driven nodes, and glassmorphism.
  */
 
-/* إضافة أنماط الحالة الحرجة للنظام */
-.agent-node.critical {
-    border-color: #ff0033 !important;
-    background: rgba(255, 0, 50, 0.1) !important;
-    color: #ff0033 !important;
-    box-shadow: 0 0 15px rgba(255, 0, 50, 0.2);
+:root {
+    --bg-deep: #00050a;
+    --accent-blue: #00d4ff;
+    --accent-glow: rgba(0, 212, 255, 0.2);
+    --text-main: #e0e0e0;
+    --glass-bg: rgba(0, 20, 40, 0.6);
 }
 
-/* تحديث الـ Agent Node لدعم المزامنة */
-.agent-node {
-    border: 1px solid var(--accent-blue);
-    padding: 15px;
-    color: var(--accent-blue);
-    text-align: center;
-    background: rgba(0, 212, 255, 0.05);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    cursor: pointer; /* جعل المؤشر دائماً يشير للتفاعل */
-    user-select: none;
+body {
+    margin: 0;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto; 
+    min-height: 100vh;
 }
 
-.agent-node:hover {
-    background: rgba(0, 212, 255, 0.15);
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-/* تنسيق عداد التهديدات */
-.integrity-counter {
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 5px;
-}
-
-/* تنسيق صندوق الحالة المباشر */
-.live-status-box {
-    margin: 15px 0;
-    padding: 10px;
-    border-left: 3px solid var(--accent-blue);
-    background: rgba(0, 0, 0, 0.3);
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-}
-
-/* بقية التنسيقات ثابتة للحفاظ على استقرار الواجهة */
+/* 1. Core Canvas: Pass-through layer */
 #core-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -58,6 +30,54 @@
     pointer-events: none; 
 }
 
+/* 2. Gateway Navigation Grid (New) */
+.gateway-nav-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.gateway-link {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.gateway-link:hover {
+    background: var(--accent-blue);
+    color: var(--bg-deep);
+}
+
+/* 3. Agent Nodes with State Sync */
+.agent-node {
+    border: 1px solid var(--accent-blue);
+    padding: 15px;
+    color: var(--accent-blue);
+    text-align: center;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.agent-node:hover {
+    background: rgba(0, 212, 255, 0.15);
+    transform: translateY(-3px);
+}
+
+.agent-node.critical {
+    border-color: #ff0033 !important;
+    background: rgba(255, 0, 50, 0.1) !important;
+    color: #ff0033 !important;
+}
+
+/* 4. Global Layout Components */
 .view-container {
     display: none;
     position: relative;
@@ -79,4 +99,12 @@
     width: 100%;
     max-width: 900px; 
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.live-status-box {
+    margin: 15px 0;
+    padding: 10px;
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', monospace;
 }
