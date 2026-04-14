@@ -1,38 +1,22 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v4.5 - FINAL GRID)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.0 - HIVE ACTIVATION)
  * -------------------------------------------------------------------------
- * Updates: Restored Grid Layout for Dashboard, Optimized Visual Hierarchy.
+ * Updates: Added kinetic feedback, pulse animations, and real-time task states.
  */
 
 :root {
     --bg-deep: #00050a;
     --accent-blue: #00d4ff;
+    --accent-gold: #ffd700;
     --text-main: #e0e0e0;
     --glass-bg: rgba(0, 20, 40, 0.6);
 }
 
-body {
-    margin: 0;
-    background-color: var(--bg-deep);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-}
-
-/* 1. Core Canvas */
-#core-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    pointer-events: none; 
-}
-
-/* 2. Grid System for Dashboard */
+/* 1. Kinetic Hive Grid */
 #hive-visualization {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
     margin-top: 2rem;
     width: 100%;
 }
@@ -44,56 +28,47 @@ body {
     text-align: center;
     background: rgba(0, 212, 255, 0.05);
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     user-select: none;
+    /* إضافة نبض حيوي خفي */
+    animation: idlePulse 4s infinite ease-in-out;
 }
 
-.agent-node:hover {
-    background: rgba(0, 212, 255, 0.15);
-    transform: translateY(-3px);
+@keyframes idlePulse {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.1); }
+    50% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
+}
+
+/* 2. Operational Task State (Visual Feedback) */
+.agent-node.processing {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    background: rgba(255, 215, 0, 0.05);
+    transform: scale(1.05);
 }
 
 /* 3. Global Layout Components */
-.view-container {
-    display: none;
-    position: relative;
-    z-index: 100;
-    min-height: 100vh;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-.view-container.active { display: flex; }
-
 .sovereign-card {
     background: var(--glass-bg);
     border: 1px solid var(--accent-blue);
     padding: 2.5rem;
     border-radius: 20px;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     width: 100%;
-    max-width: 900px; 
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-}
-
-/* 4. Info View Layout (Maintained Vertical Flow) */
-.info-card {
-    display: flex;
-    flex-direction: column;
-    max-width: 800px;
-    width: 100%;
-    padding: 2rem;
-    background: var(--glass-bg);
-    border: 1px solid var(--accent-blue);
-    border-radius: 20px;
+    max-width: 900px;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
 }
 
 .live-status-box {
     margin: 15px 0;
-    padding: 10px;
-    border-left: 3px solid var(--accent-blue);
-    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-left: 4px solid var(--accent-blue);
+    background: rgba(0, 0, 0, 0.5);
     font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
 }
+
+/* إخفاء شريط التمرير الافتراضي للجمالية */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); }
