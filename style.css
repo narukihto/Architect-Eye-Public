@@ -1,227 +1,222 @@
 /**
  * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v3.0)
+ * -------------------------------------------------------------------------
  * Style: Cyber-Ethereal / Adaptive Glassmorphism
- * Architecture: Optimized 12-Agent Swarm Layout (5-Column Grid)
+ * Feature: Dynamic Energy Pulse & Triple-View Management
+ * -------------------------------------------------------------------------
+ * AUTHOR: ISSAC ANDREW (THE ARCHITECT)
  */
 
 /* ==========================================================================
    Core Design Variables
    ========================================================================== */
 :root {
-    /* Primary Color Palette */
-    --bg-deep: #030303;               /* The Void */
-    --text-main: #e0e0e0;              /* Digital Gray */
-    --accent-blue: #00d4ff;            /* Operational Blue */
-    --accent-purple: #7000ff;          /* Authorization Purple */
-    --gold: #ffd700;                   /* System Core Gold */
-    --danger-red: #ff3333;             /* Intrusion Alert Red */
-
-    /* Glassmorphism Configuration */
+    --bg-deep: #030303;
+    --text-main: #e0e0e0;
+    --accent-blue: #00d4ff;
+    --accent-purple: #7000ff;
+    --gold: #ffd700;
+    --danger-red: #ff3333;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.1);
-    
-    /* Typography */
-    --font-primary: 'Inter', sans-serif;
-    --font-mono: 'Courier New', monospace;
 }
 
 /* ==========================================================================
-   Body & Background Configuration
+   Global Configuration
    ========================================================================== */
 body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-deep);
     color: var(--text-main);
-    font-family: var(--font-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    
-    /* Enable vertical scrolling for small screens; prevent clipping */
-    overflow-y: auto;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden; /* Prevent scrolling during 3D navigation */
+    height: 100vh;
+    width: 100vw;
 }
 
 /* ==========================================================================
-   3D Visualization Layer (Three.js Canvas)
+   The Blue Pulse Protocol (Energy Flicker)
+   ========================================================================== */
+.cyber-pulse-bg::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* Radial energy gradient */
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 99; /* Below the UI, above the 3D Background */
+    animation: energyFlicker 6s infinite ease-in-out;
+}
+
+@keyframes energyFlicker {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+    52% { opacity: 0.2; } /* Instant flicker */
+    54% { opacity: 0.8; }
+}
+
+/* ==========================================================================
+   View Management Layer
+   ========================================================================== */
+.view-container {
+    display: none; /* Inactive views are hidden */
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    z-index: 101;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.view-container.active {
+    display: flex; /* Activation via Script.js */
+}
+
+/* ==========================================================================
+   3D Canvas Layer
    ========================================================================== */
 #core-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    
-    /* Anchored behind the UI interface */
-    z-index: 0; 
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
 }
 
 /* ==========================================================================
-   Main Sovereign UI Dashboard (Glassmorphism Card)
+   Gateway (Main Landing) UI
    ========================================================================== */
-.sovereign-card {
-    /* Anchored in front of the 3D Core Visualization */
-    position: relative;
-    z-index: 1; 
-
-    /* Adaptive layout */
-    width: 90%;
-    max-width: 1000px;
-    margin: 2rem 0; /* Ensures space on mobile view */
-    padding: 2.5rem;
-    
-    /* Glassmorphism Base and Blur */
+.glass-gate {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(20px);
+    padding: 4rem;
+    border-radius: 40px;
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    
-    /* Standard Shadow */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-
-    /* Smooth transition for the Sovereign Glow effect */
-    transition: box-shadow 0.6s cubic-bezier(0.19, 1, 0.22, 1), 
-                border-color 0.6s ease,
-                transform 0.4s ease;
+    text-align: center;
+    transition: transform 0.5s ease;
 }
 
-/* ==========================================================================
-   The Sovereign Glow: Hover Effect for the Entire Card
-   ========================================================================== */
-.sovereign-card:hover {
-    /* Elevation effect */
-    transform: translateY(-8px);
-    
-    /* * Multi-layered energetic glow:
-     * 1. Tight blue inner halo
-     * 2. Diffused purple outer aura
-     * 3. Soft deep background illumination
-     */
-    box-shadow: 
-        0 0 15px 2px rgba(0, 212, 255, 0.4),   /* Inner Halo: Blue */
-        0 0 30px 10px rgba(112, 0, 255, 0.2),  /* Outer Aura: Purple */
-        0 40px 100px 10px rgba(0, 0, 0, 0.9);   /* Deep Illumination */
-
-    /* Intense border stabilization */
-    border-color: rgba(0, 212, 255, 0.6);
-}
-
-/* ==========================================================================
-   Header & Title Elements
-   ========================================================================== */
-.gradient-text {
-    /* Hybrid Blue-Purple Gradient Title */
+.glitch-text {
+    font-size: 4rem;
+    font-weight: 800;
     background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 3rem;
-    margin: 0;
-    letter-spacing: -1px;
-    font-weight: 700;
+    letter-spacing: 5px;
 }
 
-.subtitle {
-    opacity: 0.7;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+.entry-btn {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 1rem 3rem;
+    margin-top: 2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.entry-btn:hover {
+    background: var(--accent-blue);
+    color: #000;
+    box-shadow: 0 0 30px var(--accent-blue);
 }
 
 /* ==========================================================================
-   Operational Counters & Live Feeds
+   Sovereign Dashboard UI
    ========================================================================== */
-.integrity-counter {
-    font-family: var(--font-mono);
-    color: var(--accent-blue);
-    border: 1px solid var(--accent-blue);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    display: inline-block;
-    background: rgba(0, 212, 255, 0.1);
+.sovereign-card {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 1100px;
+}
+
+.nav-links span {
+    cursor: pointer;
     font-size: 0.8rem;
-    margin-top: 1.5rem;
+    opacity: 0.6;
+    transition: 0.3s;
 }
 
-.live-status-box {
-    /* Internal Glass panel for status updates */
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid var(--accent-blue);
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 25px 0;
-    font-family: var(--font-mono);
+.nav-links span:hover {
+    opacity: 1;
     color: var(--accent-blue);
-    text-align: center;
 }
 
-/* ==========================================================================
-   Adaptive Agent Hive Visualization (Grid)
-   ========================================================================== */
+/* 5-Column Tactical Grid */
 .agent-grid {
     display: grid !important;
-    
-    /* !!! Sovereign Alignment Protocol: Optimized for 5 columns !!! */
-    /* Resolves vertical layout issue and restores width symmetry */
     grid-template-columns: repeat(5, 1fr) !important;
-    
-    gap: 1.5rem;
+    gap: 1.2rem;
     margin-top: 2rem;
-    width: 100%;
 }
 
-/* ==========================================================================
-   Individual Agent Node Styling
-   ========================================================================== */
 .agent-node {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
     padding: 1.2rem;
+    border-radius: 12px;
     text-align: center;
-    backdrop-filter: blur(5px);
-    
-    /* Authorization Pulse Transition */
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                border-color 0.3s ease,
-                box-shadow 0.3s ease;
-    cursor: pointer;
+    transition: 0.4s;
 }
 
-/* Agent Node Hover effect */
-.agent-node:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-blue);
-    box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
-}
-
-/* Agent Critical Intrusion State (RED) */
 .agent-node.critical {
     border-color: var(--danger-red);
     box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
-    
-    /* Energetic alert animation */
-    animation: criticalShake 0.5s infinite;
+    animation: shake 0.5s infinite;
 }
 
-/* ==========================================================================
-   Animations & Keyframes
-   ========================================================================== */
-/* Critical State Alert Animation (Shake) */
-@keyframes criticalShake {
+@keyframes shake {
     0% { transform: translate(1px, 1px); }
     50% { transform: translate(-1px, -1px); }
     100% { transform: translate(1px, 1px); }
 }
 
 /* ==========================================================================
-   System Footer
+   Intelligence Repository (Info View)
    ========================================================================== */
-footer {
-    text-align: center;
-    margin-top: 2.5rem;
-    opacity: 0.4;
-    font-size: 0.75rem;
-    font-style: italic;
+.info-card {
+    background: #080808;
+    border-left: 5px solid var(--gold);
+    padding: 3.5rem;
+    width: 85%;
+    max-width: 900px;
+    border-radius: 0 20px 20px 0;
+    overflow-y: auto;
+    max-height: 85vh;
 }
+
+.gold-text {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.value-proposition ul {
+    list-style: none;
+    padding: 0;
+}
+
+.value-proposition li {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.5rem;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    opacity: 0.5;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.back-btn:hover { opacity: 1; color: var(--gold); }
