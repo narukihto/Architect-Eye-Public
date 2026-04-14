@@ -10,9 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
-        /* تأمين عدم تداخل الـ canvas مع الأزرار */
-        #core-canvas { pointer-events: none; }
-        .view-container { display: none; }
+        #core-canvas { pointer-events: none; position: fixed; top: 0; left: 0; z-index: 0; }
+        .view-container { display: none; position: relative; z-index: 10; height: 100vh; justify-content: center; align-items: center; }
         .view-container.active { display: flex; }
     </style>
 </head>
@@ -42,9 +41,7 @@
             <div id="status-feed" class="live-status-box">CORE: OPERATIONAL | PROTECTED</div>
             <main id="hive-visualization" class="agent-grid"></main>
             
-            <footer>
-                <p>"The future is not coded; it is architected."</p>
-            </footer>
+            <footer><p>"The future is not coded; it is architected."</p></footer>
         </div>
     </div>
 
@@ -53,7 +50,7 @@
             <button class="back-btn" onclick="navigateTo('dashboard-view')" style="cursor:pointer;">← RETURN TO CORE</button>
             <h2 class="gold-text">SWARM INTELLIGENCE & ENTERPRISE VALUE</h2>
             <div class="info-content">
-                <p>The Architect-Eye system orchestrates a 12-agent autonomous hive mind designed for next-generation digital defense and optimization.</p>
+                <p>The Architect-Eye system orchestrates a 12-agent autonomous hive mind.</p>
                 <div id="agent-definitions-list"></div>
             </div>
         </div>
