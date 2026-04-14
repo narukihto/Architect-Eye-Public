@@ -108,3 +108,15 @@ body::after {
     background: var(--accent-blue);
     color: black;
 }
+
+/* تنسيق إضافي لبيانات الوكلاء داخل الـ info-view */
+.agent-info-box {
+    background: rgba(0, 20, 40, 0.3);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-blue) !important;
+    transition: 0.3s;
+}
+
+.agent-info-box:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
