@@ -1,8 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.4 - KINETIC STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.7 - VISUAL STABLE)
  * -------------------------------------------------------------------------
- * Updates: Finalized hover animations for agent intelligence cards and 
- * consolidated global UI responsiveness.
+ * Updates: Optimized canvas depth-testing, refined transparency for 
+ * Three.js visibility, and finalized kinetic hover states.
  */
 
 :root {
@@ -10,7 +10,7 @@
     --accent-blue: #00d4ff;
     --accent-gold: #ffd700;
     --text-main: #e0e0e0;
-    --glass-bg: rgba(0, 10, 20, 0.7);
+    --glass-bg: rgba(0, 10, 20, 0.6); /* شفافية أكبر لرؤية المكعبات */
     --critical-red: #ff0033;
 }
 
@@ -19,17 +19,28 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-deep);
+    background: transparent; /* Transparent to let Canvas background shine through */
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* 1. View Controller */
+/* 1. Core Background Layer - Fixed position */
+#core-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* يضمن بقاء المكعبات خلف كل شيء */
+    background-color: var(--bg-deep); /* اللون الأساسي للخلفية */
+}
+
+/* 2. View Controller - Full-screen layout */
 .view-container {
     display: none;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -41,29 +52,19 @@ body, html {
     justify-content: center;
 }
 
-/* 2. Core Background Layer */
-#core-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-/* 3. Sovereign UI Components */
+/* 3. Sovereign UI Components - Glassmorphism */
 .sovereign-card, .glass-gate, .info-card {
     background: var(--glass-bg);
-    border: 1px solid var(--accent-blue);
+    border: 1px solid rgba(0, 212, 255, 0.3); /* إطار أخف */
     padding: 2.5rem;
     border-radius: 20px;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px); /* تعتيم أقوى لإظهار المكعبات خلفه */
     width: 100%;
     max-width: 900px;
-    box-shadow: 0 0 40px rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-/* 4. Hive & Intelligence Grid */
+/* 4. Agent Grids */
 .agent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -80,19 +81,15 @@ body, html {
     background: rgba(0, 212, 255, 0.05);
     border-radius: 10px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: idlePulse 4s infinite ease-in-out;
 }
 
-.agent-node img {
-    border: 1px solid var(--accent-blue);
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-/* Agent Info Box Hover Effects */
+/* 5. Hover Effects */
 .agent-info-box {
     transition: all 0.3s ease;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid var(--accent-blue);
+    padding: 15px;
+    border-radius: 12px;
 }
 
 .agent-info-box:hover {
@@ -101,24 +98,11 @@ body, html {
     border-color: var(--accent-gold) !important;
 }
 
-/* 5. Operational Task States */
-.agent-node.processing {
-    border-color: var(--accent-gold) !important;
-    color: var(--accent-gold);
-    transform: scale(1.03);
+/* 6. Critical Alerts */
+.agent-node.critical {
+    border-color: var(--critical-red) !important;
+    color: var(--critical-red);
 }
-
-/* 6. UI Elements & Aesthetics */
-.live-status-box {
-    margin: 15px 0;
-    padding: 15px;
-    border-left: 4px solid var(--accent-blue);
-    background: rgba(0, 0, 0, 0.6);
-    font-family: 'Courier New', monospace;
-}
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: var(--accent-blue); }
 
 .gradient-text {
     background: linear-gradient(90deg, var(--accent-blue), #fff);
