@@ -1,8 +1,8 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.7 - VISUAL STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL INTERFACE (v5.8 - FINAL PRODUCTION)
  * -------------------------------------------------------------------------
- * Updates: Optimized canvas depth-testing, refined transparency for 
- * Three.js visibility, and finalized kinetic hover states.
+ * Updates: Integrated Glitch-Text logic, optimized transparency for 3D depth,
+ * and finalized kinetic feedback loops for sovereign agents.
  */
 
 :root {
@@ -10,7 +10,7 @@
     --accent-blue: #00d4ff;
     --accent-gold: #ffd700;
     --text-main: #e0e0e0;
-    --glass-bg: rgba(0, 10, 20, 0.6); /* شفافية أكبر لرؤية المكعبات */
+    --glass-bg: rgba(0, 10, 20, 0.6);
     --critical-red: #ff0033;
 }
 
@@ -19,24 +19,63 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    background: transparent; /* Transparent to let Canvas background shine through */
+    background: transparent;
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* 1. Core Background Layer - Fixed position */
+/* 1. Core Background Layer */
 #core-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* يضمن بقاء المكعبات خلف كل شيء */
-    background-color: var(--bg-deep); /* اللون الأساسي للخلفية */
+    z-index: -1;
+    background-color: var(--bg-deep);
 }
 
-/* 2. View Controller - Full-screen layout */
+/* 2. Glitch Effect - Cybernetics Core */
+.glitch-text {
+    position: relative;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 5px;
+    animation: glitch 1s linear infinite;
+}
+
+@keyframes glitch {
+    2%, 64% { transform: translate(2px, 0) skew(0deg); }
+    4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+    62% { transform: translate(0, 0) skew(5deg); }
+}
+
+.glitch-text:before, .glitch-text:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text:before { left: 2px; text-shadow: -2px 0 var(--critical-red); clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+.glitch-text:after { left: -2px; text-shadow: -2px 0 var(--accent-blue); clip: rect(85px, 450px, 140px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+
+@keyframes glitch-anim {
+    0% { clip: rect(31px, 9999px, 94px, 0); }
+    100% { clip: rect(117px, 9999px, 121px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 119px, 0); }
+    100% { clip: rect(79px, 9999px, 148px, 0); }
+}
+
+/* 3. View Controller */
 .view-container {
     display: none;
     width: 100%;
@@ -52,19 +91,19 @@ body, html {
     justify-content: center;
 }
 
-/* 3. Sovereign UI Components - Glassmorphism */
+/* 4. Sovereign UI Components */
 .sovereign-card, .glass-gate, .info-card {
     background: var(--glass-bg);
-    border: 1px solid rgba(0, 212, 255, 0.3); /* إطار أخف */
+    border: 1px solid rgba(0, 212, 255, 0.3);
     padding: 2.5rem;
     border-radius: 20px;
-    backdrop-filter: blur(20px); /* تعتيم أقوى لإظهار المكعبات خلفه */
+    backdrop-filter: blur(20px);
     width: 100%;
     max-width: 900px;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-/* 4. Agent Grids */
+/* 5. Agent Grids */
 .agent-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -83,7 +122,7 @@ body, html {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* 5. Hover Effects */
+/* 6. Kinetic Hover States */
 .agent-info-box {
     transition: all 0.3s ease;
     background: rgba(0, 212, 255, 0.05);
@@ -98,7 +137,6 @@ body, html {
     border-color: var(--accent-gold) !important;
 }
 
-/* 6. Critical Alerts */
 .agent-node.critical {
     border-color: var(--critical-red) !important;
     color: var(--critical-red);
