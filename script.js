@@ -10,6 +10,23 @@ let scene, camera, renderer, cubeSwarm = [];
 let currentSystemState = 'OPERATIONAL';
 
 /**
+ * دالة التنقل (Navigation Logic)
+ * تقوم بتبديل الطبقات بين الواجهات
+ */
+function navigateTo(viewId) {
+    // 1. إخفاء جميع الحاويات
+    document.querySelectorAll('.view-container').forEach(view => {
+        view.classList.remove('active');
+    });
+
+    // 2. إظهار الحاوية المستهدفة
+    const target = document.getElementById(viewId);
+    if (target) {
+        target.classList.add('active');
+    }
+}
+
+/**
  * Initializes the 3D Sovereign Environment
  */
 function init3DEnvironment() {
@@ -67,14 +84,15 @@ function animateSwarm() {
 
 /**
  * Agent Hive Logic: Orchestration Protocols
- * Updated with Navigation to Info View
  */
 function initHiveMind() {
+    if (!hiveContainer) return;
     hiveContainer.innerHTML = '';
     for (let i = 0; i < 12; i++) {
         const node = document.createElement('div');
         node.className = 'agent-node';
         node.id = `agent-${i}`;
+        // استخدام الأرقام الست عشرية أو الترميز للـ ID
         node.innerHTML = `
             <strong>AGENT-${i}</strong><br>
             <span class="status">ACTIVE</span><br>
