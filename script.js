@@ -1,21 +1,33 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.2 - ASSET INTEGRATION)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.3 - STABLE)
  * -------------------------------------------------------------------------
- * Updates: Finalized dynamic asset mapping from /space/, consolidated UI 
- * orchestration, and stabilized repository sync logic.
+ * Updates: Integrated View Controller, stabilized asset loading, and 
+ * reinforced logic for cross-view synchronization.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
-let scene, camera, renderer, cubeSwarm = [];
 let systemStatus = { state: 'OPERATIONAL' };
 let threatCount = 0;
 
-// Asset mapping: 12 agents, mapped to available images in /space/
+// Asset mapping: 12 agents, mapped to /space/
 const agentAssets = ["nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg", "nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg"];
 
 /**
- * 1. Hive Mind Initializer
- * Dynamically constructs the agent grid and maps space assets.
+ * 1. View Controller
+ * Manages UI layer visibility to prevent layout collapse.
+ */
+window.navigateTo = function(viewId) {
+    document.querySelectorAll('.view-container').forEach(view => {
+        view.classList.remove('active');
+    });
+    const target = document.getElementById(viewId);
+    if (target) {
+        target.classList.add('active');
+    }
+};
+
+/**
+ * 2. Hive Mind Initializer
  */
 function initHiveMind() {
     const grid = document.getElementById('hive-visualization');
@@ -25,7 +37,7 @@ function initHiveMind() {
         const node = document.createElement('div');
         node.className = 'agent-node';
         node.innerHTML = `
-            <img src="space/${agentAssets[i]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px; border: 1px solid #00d4ff;">
+            <img src="space/${agentAssets[i]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px;">
             <br><strong>AGENT-${i}</strong>
             <br><span>ACTIVE</span>
             <br><small>ID:---</small>
@@ -35,11 +47,11 @@ function initHiveMind() {
 }
 
 /**
- * 2. Autonomous Agent Processor
- * Orchestrates individual agent cycles with kinetic CSS feedback.
+ * 3. Autonomous Agent Processor
  */
 function activateAgent(index) {
-    const node = document.querySelector(`.agent-node:nth-child(${index + 1})`);
+    const nodes = document.querySelectorAll('.agent-node');
+    const node = nodes[index];
     if (!node) return;
 
     setInterval(() => {
@@ -64,12 +76,11 @@ function activateAgent(index) {
                 <br><small>ID:${newId}==</small>
             `;
         }, 1200);
-        
     }, Math.random() * 4000 + 2000); 
 }
 
 /**
- * 3. Synchronization & UI Orchestrator
+ * 4. Synchronization Engine
  */
 async function syncSystemStatus() {
     try {
@@ -93,14 +104,18 @@ function updateUI() {
 
 // Initialization Logic
 document.addEventListener('DOMContentLoaded', () => {
-    init3DEnvironment(); // Assumes existing 3D context
+    // Ensure 3D background exists
+    if (typeof init3DEnvironment === 'function') init3DEnvironment();
+    
     initHiveMind();
-    startLiveThreatCounter();
+    if (typeof startLiveThreatCounter === 'function') startLiveThreatCounter();
     syncSystemStatus();
     
-    for (let i = 0; i < 12; i++) {
-        activateAgent(i);
-    }
+    setTimeout(() => {
+        for (let i = 0; i < 12; i++) {
+            activateAgent(i);
+        }
+    }, 500);
     
     setInterval(syncSystemStatus, 3000);
 });
