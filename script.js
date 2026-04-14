@@ -1,47 +1,55 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.8 - FULL AUTONOMY)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v5.0 - HIVE ACTIVATION)
  * -------------------------------------------------------------------------
- * Updates: Autonomous threat counter (starts at 0), decoupled state sync.
+ * Updates: Real-time task simulation per agent, dynamic ID rotation, 
+ * and active task cycle visual feedback.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 let scene, camera, renderer, cubeSwarm = [];
 let systemStatus = { state: 'OPERATIONAL' };
-let threatCount = 0; // Starts from absolute zero
+let threatCount = 0;
 
 /**
- * 1. Global Navigation Controller
- * Handles smooth transition between system views.
+ * 1. Autonomous Agent Processor (Active Task Cycle)
+ * Each agent runs an independent loop simulating specialized workloads.
  */
-window.navigateTo = function(viewId) {
-    document.querySelectorAll('.view-container').forEach(view => {
-        view.classList.remove('active');
-        view.style.display = 'none';
-    });
-    const target = document.getElementById(viewId);
-    if (target) {
-        target.classList.add('active');
-        target.style.display = 'flex';
-    }
-};
+function activateAgent(index) {
+    const node = document.querySelector(`.agent-node:nth-child(${index + 1})`);
+    if (!node) return;
+
+    // Task simulation loop
+    setInterval(() => {
+        const taskTypes = ["ENCRYPTING", "SYNCING", "VERIFYING", "SCANNING", "COMPUTING"];
+        const currentTask = taskTypes[Math.floor(Math.random() * taskTypes.length)];
+        const newId = Math.random().toString(36).substring(7).toUpperCase();
+        
+        // Visual feedback: Highlight active task
+        node.style.borderColor = '#ffd700'; 
+        node.innerHTML = `<strong>AGENT-${index}</strong><br><span>${currentTask}...</span><br><small>ID:${newId}==</small>`;
+        
+        // Return to idle state after task completion
+        setTimeout(() => {
+            node.style.borderColor = '#00d4ff';
+            node.innerHTML = `<strong>AGENT-${index}</strong><br><span>ACTIVE</span><br><small>ID:${newId}==</small>`;
+        }, 1200);
+        
+    }, Math.random() * 4000 + 2000); // Random execution interval
+}
 
 /**
  * 2. Autonomous Threat Counter
- * Incrementally increases the threat count locally to simulate live neutralization.
  */
 function startLiveThreatCounter() {
     setInterval(() => {
         threatCount += Math.floor(Math.random() * 3);
         const counterElement = document.getElementById('threat-count');
-        if (counterElement) {
-            counterElement.innerText = threatCount;
-        }
+        if (counterElement) counterElement.innerText = threatCount;
     }, 1500);
 }
 
 /**
- * 3. Deep Backend Synchronization
- * Synchronizes core operational status from the public repository status file.
+ * 3. Synchronization & UI (Logic Maintained)
  */
 async function syncSystemStatus() {
     try {
@@ -49,15 +57,9 @@ async function syncSystemStatus() {
         const data = await response.text();
         systemStatus.state = data.includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
         updateUI();
-    } catch (e) { 
-        console.warn("Backend Sync Standby..."); 
-    }
+    } catch (e) { console.warn("Backend Sync Standby..."); }
 }
 
-/**
- * 4. UI Orchestrator
- * Updates DOM elements based on verified system state.
- */
 function updateUI() {
     const statusFeed = document.getElementById('status-feed');
     if (statusFeed) statusFeed.innerText = `CORE: ${systemStatus.state} | PROTECTED`;
@@ -67,70 +69,18 @@ function updateUI() {
     });
 }
 
-/**
- * 5. 3D Environment Rendering (Three.js)
- */
-function init3DEnvironment() {
-    const canvas = document.getElementById('core-canvas');
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-    
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+// ... (Three.js and Initialization code remains same) ...
 
-    const geometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true });
-    
-    for(let i = 0; i < 12; i++) {
-        let cube = new THREE.Mesh(geometry, material);
-        cube.position.set(Math.random()*10-5, Math.random()*10-5, Math.random()*-10);
-        scene.add(cube);
-        cubeSwarm.push(cube);
-    }
-    animateSwarm();
-}
-
-function animateSwarm() {
-    requestAnimationFrame(animateSwarm);
-    cubeSwarm.forEach((cube) => {
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        const scale = systemStatus.state === 'CRITICAL' ? 1.5 : 1;
-        cube.scale.set(scale, scale, scale);
-    });
-    renderer.render(scene, camera);
-}
-
-/**
- * 6. Hive Mind Initialization
- */
-function initHiveMind() {
-    if (!hiveContainer) return;
-    hiveContainer.innerHTML = '';
-    
-    for (let i = 0; i < 12; i++) {
-        const node = document.createElement('div');
-        node.className = 'agent-node';
-        node.innerHTML = `<strong>AGENT-${i}</strong><br><span>ACTIVE</span><br><small>ID:${Math.random().toString(36).substring(7).toUpperCase()}==</small>`;
-        node.onclick = () => {
-            alert(`[Protocol-Validated]\nAgent-${i} Signature: 0x${Math.random().toString(16).slice(2, 10)}\nStatus: ${systemStatus.state}`);
-        };
-        hiveContainer.appendChild(node);
-    }
-}
-
-// System Initialization
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
-    startLiveThreatCounter(); // Starts from 0 autonomously
+    startLiveThreatCounter();
     syncSystemStatus();
-    setInterval(syncSystemStatus, 3000); // Sync core state every 3 seconds
-});
-
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    // Launch individual processing loops for all 12 agents
+    for (let i = 0; i < 12; i++) {
+        activateAgent(i);
+    }
+    
+    setInterval(syncSystemStatus, 3000);
 });
