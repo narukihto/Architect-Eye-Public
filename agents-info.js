@@ -1,6 +1,8 @@
 /**
- * ARCHITECT-EYE OS: AGENT INTELLIGENCE DATA (v4.5 - CORE INTEGRATION)
- * Updated to reflect the 12-Agent Hive Mind architecture (Isaac Andrew, 2026).
+ * ARCHITECT-EYE OS: AGENT INTELLIGENCE DATA (v5.2 - CORE INTEGRATION)
+ * -------------------------------------------------------------------------
+ * Updates: Finalized styling for Repository view, integrated with global 
+ * sovereign UI components, and stabilized integrity verification.
  */
 
 const sovereignAgentsData = [
@@ -20,15 +22,22 @@ const sovereignAgentsData = [
 
 /**
  * Renders the accurate agent intelligence data into the UI.
+ * Now optimized with sovereign glass-card styling to match the system dashboard.
  */
 function renderAgentInfo() {
     const infoContainer = document.getElementById('agent-definitions-list');
     if (!infoContainer) return;
 
     infoContainer.innerHTML = sovereignAgentsData.map(agent => `
-        <div class="agent-info-box" onclick="verifyAgent('${agent.name}')" style="cursor: pointer; border: 1px solid #00d4ff; padding: 12px; margin-bottom: 10px; border-radius: 8px; background: rgba(0, 212, 255, 0.05);">
-            <h4 style="color: #ffd700; margin: 0;">${agent.id} | ${agent.name} <small style="color: #00d4ff;">[${agent.specialization}]</small></h4>
-            <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 8px; font-family: 'Courier New', monospace;">${agent.value}</p>
+        <div class="agent-info-box" onclick="verifyAgent('${agent.name}')" 
+             style="cursor: pointer; border: 1px solid var(--accent-blue); padding: 15px; margin-bottom: 15px; border-radius: 12px; background: rgba(0, 212, 255, 0.05); backdrop-filter: blur(10px); transition: all 0.3s ease;">
+            <h4 style="color: var(--accent-gold); margin: 0 0 5px 0; font-size: 1.1rem;">
+                ${agent.id} | ${agent.name} 
+                <small style="color: var(--accent-blue); font-size: 0.8rem;">[${agent.specialization}]</small>
+            </h4>
+            <p style="font-size: 0.9rem; color: #fff; opacity: 0.8; margin: 0; font-family: 'Courier New', monospace;">
+                ${agent.value}
+            </p>
         </div>
     `).join('');
 }
