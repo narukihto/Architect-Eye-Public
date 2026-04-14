@@ -1,15 +1,17 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.5 - DYNAMIC)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v4.8 - FULL AUTONOMY)
  * -------------------------------------------------------------------------
- * Updates: Live threat counter increment, Global Navigation, Hive Sync.
+ * Updates: Autonomous threat counter (starts at 0), decoupled state sync.
  */
 
 const hiveContainer = document.getElementById('hive-visualization');
 let scene, camera, renderer, cubeSwarm = [];
-let systemStatus = { state: 'OPERATIONAL', threats: 374 }; // Starting value as requested
+let systemStatus = { state: 'OPERATIONAL' };
+let threatCount = 0; // Starts from absolute zero
 
 /**
  * 1. Global Navigation Controller
+ * Handles smooth transition between system views.
  */
 window.navigateTo = function(viewId) {
     document.querySelectorAll('.view-container').forEach(view => {
@@ -24,32 +26,37 @@ window.navigateTo = function(viewId) {
 };
 
 /**
- * 2. Dynamic Threat Counter (Live Simulation)
+ * 2. Autonomous Threat Counter
+ * Incrementally increases the threat count locally to simulate live neutralization.
  */
-function animateThreatCounter() {
-    const threatCountElement = document.getElementById('threat-count');
-    if (threatCountElement) {
-        // Increment threats randomly to simulate active neutralization
-        threatCount += Math.floor(Math.random() * 2);
-        threatCountElement.innerText = threatCount;
-    }
+function startLiveThreatCounter() {
+    setInterval(() => {
+        threatCount += Math.floor(Math.random() * 3);
+        const counterElement = document.getElementById('threat-count');
+        if (counterElement) {
+            counterElement.innerText = threatCount;
+        }
+    }, 1500);
 }
 
 /**
- * 3. Deep Backend Sync
+ * 3. Deep Backend Synchronization
+ * Synchronizes core operational status from the public repository status file.
  */
 async function syncSystemStatus() {
     try {
         const response = await fetch('status.txt?nocache=' + new Date().getTime());
         const data = await response.text();
-        const parts = data.split('|');
-        systemStatus.state = parts[0].includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
+        systemStatus.state = data.includes('CRITICAL') ? 'CRITICAL' : 'OPERATIONAL';
         updateUI();
-    } catch (e) { console.warn("Backend Sync Pending..."); }
+    } catch (e) { 
+        console.warn("Backend Sync Standby..."); 
+    }
 }
 
 /**
- * 4. State-Driven UI Orchestrator
+ * 4. UI Orchestrator
+ * Updates DOM elements based on verified system state.
  */
 function updateUI() {
     const statusFeed = document.getElementById('status-feed');
@@ -61,7 +68,7 @@ function updateUI() {
 }
 
 /**
- * 5. 3D Environment (Three.js)
+ * 5. 3D Environment Rendering (Three.js)
  */
 function init3DEnvironment() {
     const canvas = document.getElementById('core-canvas');
@@ -113,15 +120,13 @@ function initHiveMind() {
     }
 }
 
-// Initialization Logic
+// System Initialization
 document.addEventListener('DOMContentLoaded', () => {
     init3DEnvironment();
     initHiveMind();
+    startLiveThreatCounter(); // Starts from 0 autonomously
     syncSystemStatus();
-    
-    // Intervals for updates
-    setInterval(syncSystemStatus, 3000);
-    setInterval(animateThreatCounter, 1500); // Dynamic counter updates every 1.5s
+    setInterval(syncSystemStatus, 3000); // Sync core state every 3 seconds
 });
 
 window.addEventListener('resize', () => {
