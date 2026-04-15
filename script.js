@@ -11,6 +11,22 @@
  * 3. AGENT SWARM: Dynamic entity rendering with adaptive behavioral states.
  */
 
+// Global Navigation Controller
+window.navigateTo = function(viewId) {
+    // إخفاء جميع الصفحات
+    document.querySelectorAll('.view-container').forEach(view => {
+        view.classList.remove('active');
+    });
+    // إظهار الصفحة المطلوبة
+    const target = document.getElementById(viewId);
+    if (target) {
+        target.classList.add('active');
+        console.log("Navigated to: " + viewId);
+    } else {
+        console.error("Target view not found: " + viewId);
+    }
+};
+
 let systemStatus = { state: 'SYNCING...', lastSync: 'N/A' };
 let threatCount = 0; 
 const agentAssets = ["nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg", "nx.jpg", "ny.jpg", "nz.jpg", "px.jpg", "py.jpg", "pz.jpg"];
