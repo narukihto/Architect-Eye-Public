@@ -1,5 +1,5 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v6.9.3 - STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v7.0 - PRODUCTION STABLE)
  * -------------------------------------------------------------------------
  * OVERVIEW:
  * This engine serves as the centralized orchestration hub. It manages 
@@ -13,11 +13,11 @@
 
 // Global Navigation Controller
 window.navigateTo = function(viewId) {
-    // إخفاء جميع الصفحات
+    // Hide all views to reset dashboard state
     document.querySelectorAll('.view-container').forEach(view => {
         view.classList.remove('active');
     });
-    // إظهار الصفحة المطلوبة
+    // Display the requested view
     const target = document.getElementById(viewId);
     if (target) {
         target.classList.add('active');
@@ -58,22 +58,27 @@ async function syncSystemStatus() {
 /**
  * Autonomous simulation engine to showcase swarm intelligence responses.
  * Operates in a decoupled sandbox to maintain UI responsiveness.
+ * Adjusted for tactical pacing: slow-growth threat simulation.
  */
 function startAutonomousSimulation() {
+    // Throttled threat escalation to maintain visual stability
     setInterval(() => {
-        // Simulation logic triggers reactive swarm behavior during idle states
+        // Only trigger escalation if the system is currently in an idle/operational state
         if (systemStatus.state === 'OPERATIONAL') {
-            threatCount += Math.floor(Math.random() * 3);
+            
+            // Incremental step of 1 for granular, controlled growth
+            threatCount += 1; 
+            
             const counter = document.getElementById('threat-count');
             if (counter) counter.innerText = threatCount;
             
-            // Escalation logic: Shifts state to CRITICAL for visual demonstration
-            if (threatCount > 0) {
+            // Tactical threshold: Trigger defense protocols after reaching a threat density of 5
+            if (threatCount > 5) {
                 systemStatus.state = 'CRITICAL';
                 updateUI();
             }
         }
-    }, 2500);
+    }, 5000); // 5-second interval for deliberate, high-fidelity cadence
 }
 
 /**
