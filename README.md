@@ -60,6 +60,11 @@ Architect-Eye OS is designed to be the central nervous system for sovereign tech
 * **Critical Infrastructure Defense:** Autonomous, self-healing protocols for power grids and data nodes.
 
 ---
+## 🛡️ Operational Validation
+The Architect-Eye OS undergoes continuous integrity verification via automated CI/CD pipelines.
+![Sovereignty Integrity Check](/docs/evidence/sovereignty_integrity_check.png)
+*Figure 1: Automated confirmation of Level-0 Executive Override protocols and sovereign integrity.*
+---
 
 ## 🛡️ Access & Engagement
 * **Public Interface:** This repository acts as the **Sovereign Gate**—displaying system telemetry, integrity badges, and public metrics.
