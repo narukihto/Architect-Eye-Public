@@ -63,6 +63,10 @@ Architect-Eye OS is designed to be the central nervous system for sovereign tech
 ## 🛡️ Operational Validation
 The Architect-Eye OS undergoes continuous integrity verification via automated CI/CD pipelines.
 ![Sovereignty Integrity Check](/docs/evidence/sovereignty_integrity_check.png)
+![Sovereignty Integrity Check](/docs/evidence/sovereignty_integrity_check2.png)
+![Sovereignty Integrity Check](/docs/evidence/sovereignty_integrity_check3.png)
+
+
 *Figure 1: Automated confirmation of Level-0 Executive Override protocols and sovereign integrity.*
 ---
 
