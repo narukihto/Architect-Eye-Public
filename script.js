@@ -1,5 +1,5 @@
 /**
- * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v7.0 - PRODUCTION STABLE)
+ * ARCHITECT-EYE OS: SOVEREIGN OPERATIONAL ENGINE (v7.1 - PRODUCTION STABLE)
  * -------------------------------------------------------------------------
  * OVERVIEW:
  * This engine serves as the centralized orchestration hub. It manages 
@@ -72,13 +72,13 @@ function startAutonomousSimulation() {
             const counter = document.getElementById('threat-count');
             if (counter) counter.innerText = threatCount;
             
-            // Tactical threshold: Trigger defense protocols after reaching a threat density of 5
-            if (threatCount > 5) {
+            // Tactical threshold: Trigger defense protocols after reaching a threat density of 10
+            if (threatCount > 10) {
                 systemStatus.state = 'CRITICAL';
                 updateUI();
             }
         }
-    }, 5000); // 5-second interval for deliberate, high-fidelity cadence
+    }, 6000); // Increased interval to 6 seconds for a slower cadence
 }
 
 /**
@@ -107,13 +107,23 @@ function updateUI() {
 /**
  * Activates individual autonomous agents with unique hashed identities.
  * Assigns tasks dynamically based on the current system security posture.
+ * Each agent now maintains its own independent defensive counter.
  */
 function activateAgent(index) {
     const nodes = document.querySelectorAll('.agent-node');
     if (!nodes[index]) return;
 
+    // Independent agent threat-blocking state
+    let blockedCount = 0;
+
     setInterval(() => {
         const isOperational = systemStatus.state === 'OPERATIONAL';
+        
+        // If critical, agent independently performs a "block" action
+        if (!isOperational) {
+            blockedCount += Math.floor(Math.random() * 2);
+        }
+
         const tasks = isOperational 
             ? ["ENCRYPTING", "SYNCING", "VERIFYING", "SCANNING"]
             : ["DEFENSE_PROTOCOL", "ISOLATING_CORE", "PURGING_VIRUS", "COUNTER_ATTACK"];
@@ -123,9 +133,9 @@ function activateAgent(index) {
             <img src="space/${agentAssets[index]}" style="width:40px; height:40px; border-radius:50%; margin-bottom:5px;">
             <br><strong>AGENT-${index}</strong>
             <br><span style="color:${isOperational ? '#00d4ff' : '#ff0033'}">${tasks[Math.floor(Math.random()*tasks.length)]}...</span>
-            <br><small>ID:${btoa(Date.now() + index).substring(0, 8).toUpperCase()}==</small>
+            <br><small>BLOCKS:${blockedCount} | ID:${btoa(Date.now() + index).substring(0, 8).toUpperCase()}==</small>
         `;
-    }, 4000 + (index * 150)); 
+    }, 5000 + (index * 200)); 
 }
 
 // System initialization protocol
